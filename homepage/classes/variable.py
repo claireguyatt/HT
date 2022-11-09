@@ -23,7 +23,7 @@ class Binary_Variable(Variable):
             var_data = input(self.prompt + '\n')
         return var_data
 
-class Continuous_Var(Variable):
+class Continuous_Variable(Variable):
 
     def check_input(self):
 
@@ -33,7 +33,7 @@ class Continuous_Var(Variable):
             var_data = input(self.prompt + '\n')
         return var_data
 
-class Categorical_Var(Variable):
+class Categorical_Variable(Variable):
     
     def __init__(self, name, prompt, choices):
         self.name = name

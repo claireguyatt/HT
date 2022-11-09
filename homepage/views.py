@@ -13,6 +13,9 @@ def index(request):
 def edit_profile(request):
     return render(request, 'user/edit_profile.html')
 
+def input_data(request):
+    return render(request, 'user/input_data.html')
+
 def logout_user(request):
     logout(request)
-    return render(request, 'welcome.html')
+    return redirect('/')
