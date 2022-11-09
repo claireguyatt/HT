@@ -18,13 +18,12 @@ class Variable(models.Model):
     def get_absolute_url(self):
         return 'model-detail-view', [str(self.id)]
 
-
+# subclass of variable model
 class Categorical_Variable(Variable):
     
     # if binary, choices are automatically Y/N
     is_binary = models.BooleanField()
     choices = models.JSONField()
-
 
 GENDER_CHOICES = (
     ("Female", "Female"),

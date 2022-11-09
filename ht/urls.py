@@ -27,5 +27,6 @@ urlpatterns = [
     path('welcome/', include('django.contrib.auth.urls')),
     path('homepage/', include('homepage.urls')),
     path('homepage/', include('django.contrib.auth.urls')),
+    path('settings/', include('settings.urls')),
     path('admin/', admin.site.urls)
 ]

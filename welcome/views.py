@@ -17,13 +17,10 @@ def register(request):
         form = NewUserForm(request.POST)
         if form.is_valid():
             user = form.save()
-
-            print(user)
             profile = Profile.objects.create(user=user, username=user.username, 
                     email=user.email, dob=form.cleaned_data['dob'], number=form.cleaned_data['number'], 
                     gender=form.cleaned_data['gender'])
             profile.save()
-
             login(request, user)
             print("Registration successful.")
             return redirect('/homepage')

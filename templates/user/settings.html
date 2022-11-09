@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta name="viewport">
+    <style></style>
+    </head>
+    <body>
+
+        <h1>Settings</h1>
+        <lu>
+            <li><button onclick="edit_profile()">edit profile</button></li>
+            <br>
+            <li><button onclick="change_username()">change username</button></li>
+            <div id="change_username_container" style="display:none">
+                <form action="change_username/" method="POST">
+                    {% csrf_token %}
+                    <p>
+                        <label for="new_username">New username:</label>
+                        <input type="text" name="new_username" maxlength="254" autofocus="" required="" id="new_username">  
+
+                        <span class="helptext">Enter your new username here</span>
+                        <br><br>
+                        <button type="submit">Change username</button>
+                    </p>            
+                </form>
+            </div>
+            <br>
+            <li><button onclick="change_email()">change email</button></li>
+            <div id="change_email_container" style="display:none">
+                <form action="change_email/" method="POST">
+                    {% csrf_token %}
+                    <p>
+                        <label for="new_email">New email:</label>
+                        <input type="email" name="new_email" maxlength="254" autofocus="" required="" id="new_email">  
+
+                        <span class="helptext">Enter your new email here</span>
+                        <br><br>
+                        <button type="submit">Change email</button>
+                    </p>            
+                </form>
+            </div>
+            <br>
+            <li><a href="/homepage/password_change">change password</button></li>
+            <br>
+            <li><a href="/homepage/password_reset">forgot password</a></li>
+            <br>
+            <li><button onclick="delete_account()">delete account</button></li>
+            <div id="delete_account_container" style="display:none;">
+                <p>are you sure you want to delete your account?</p>
+                <a href="delete_account/">Yes, delete my account</a>
+                <button onclick="delete_account()">No, I want to know what makes me happy</button>
+            </div>
+        </lu>
+
+        <br> 
+        <a href="/homepage">back to homepage</a>
+
+        <script>
+            function delete_account() {
+                var x = document.getElementById("delete_account_container");
+                if (x.style.display=="none") {
+                    x.style.display = "block";
+                } else {
+                    x.style.display = "none";
+                }
+            }
+            function change_email() {
+                var x = document.getElementById("change_email_container");
+                if (x.style.display=="none") {
+                    x.style.display = "block";
+                } else {
+                    x.style.display = "none";
+                }
+            }
+            function change_username() {
+                var x = document.getElementById("change_username_container");
+                if (x.style.display=="none") {
+                    x.style.display = "block";
+                } else {
+                    x.style.display = "none";
+                }
+            }
+            function edit_profile() {
+                var x = document.getElementById("edit_profile_container");
+                if (x.style.display=="none") {
+                    x.style.display = "block";
+                } else {
+                    x.style.display = "none";
+                }
+            }
+        </script>
+    </body>
+</html>
