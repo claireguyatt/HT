@@ -32,6 +32,9 @@ GENDER_CHOICES = (
     ("Other", "Other")
 )
 
+class UserData(models.Model):
+    pass
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     username = models.CharField(max_length=20, help_text='Enter your username here')
@@ -48,6 +51,8 @@ class Profile(models.Model):
     # return URL dor inidvidual model records
     def get_absolute_url(self):
         return 'model-detail-view', [str(self.id)]
+
+    
 
 
 

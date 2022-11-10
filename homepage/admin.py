@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile
+from .models import Profile, Variable, Categorical_Variable
 
 # Register your models here.
 
@@ -13,3 +13,6 @@ class ProfileAdmin(admin.ModelAdmin):
 
 # register admin class w associated model
 admin.site.register(Profile, ProfileAdmin)
+admin.site.register(Variable)
+admin.site.register(Categorical_Variable)
+#admin.site.register(UserData)
