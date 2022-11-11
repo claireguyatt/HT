@@ -28,5 +28,6 @@ urlpatterns = [
     path('homepage/', include('homepage.urls')),
     path('homepage/', include('django.contrib.auth.urls')),
     path('settings/', include('settings.urls')),
+    path('edit_variables/', include('edit_variables.urls')),
     path('admin/', admin.site.urls)
 ]

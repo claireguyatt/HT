@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<h1>Edit Variables</h1>
+
+<p> 
+    <table>
+        {% for variable in variables.all %}
+        <tr>
+            <td>{{ variable }}</td>
+            <td>
+            <form action="delete/" method="POST">
+                {% csrf_token %}
+                <button type="submit" name="variable" value={{variable}}>delete</button>
+            </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <button onclick="add_variable()">add variable</button>
+    <div id="add_variable_container" style="display:none;">
+        <form action="add_variable/" method="POST" id="add_variable_form" onsubmit="return validateForm()">
+            {% csrf_token %}
+            <p>
+                <label for="name">New variable name:</label>
+                <input type="text" name="name" maxlength="100" autofocus="" required="" id="name">  
+                <br><br>
+                <label for="prompt">New variable prompt:</label>
+                <input type="text" name="prompt" maxlength="254" autofocus="" required="" id="prompt">  
+                <br><br>
+                <button type="submit">Submit</button>
+                
+            </p>            
+        </form>
+    </div>
+</p>
+<br>
+<a href="/homepage">back to homepage</a>
+<script>
+    function add_variable() {
+        var x = document.getElementById("add_variable_container");
+        if (x.style.display=="none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+    function validateForm() {
+        var name = document.forms["add_variable_form"]["name"].value;
+        var prompt = document.forms["add_variable_form"]["prompt"].value;
+        if (!name.replace(/\s/g, '').length || !prompt.replace(/\s/g, '').length) {
+            alert("Name & prompt must be filled out");
+            return false;
+        }
+    }
+</script>
+

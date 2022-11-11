@@ -13,6 +13,9 @@ def index(request):
 def settings(request):
     return redirect('/settings')
 
+def edit_variables(request):
+    return redirect('/edit_variables')
+
 def input_data(request):
     return render(request, 'user/input_data.html')
 
