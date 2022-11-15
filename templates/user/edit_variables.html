@@ -17,9 +17,54 @@
         {% endfor %}
     </table>
     <br>
+
+    <div id="new_variable_container">
+        <button onclick="add_variable()">Add variable</button>
+        <div id="new_variable_dropdown" style="display:none">
+            <label for="type">Variable type:</label>
+            <select id="type" name="type" onChange="is_categorical(this)">
+                <option value="continuous">Continuous</option>
+                <option value="binary">Binary</option>
+                <option value="categorical">Categorical</option>
+            </select>
+            <br>
+        </div>
+        <div id="new_categorical_variable_container" style="display:none">
+
+            <form action="add_variable/" method="POST">
+                {% csrf_token %}
+                <br> 
+                {{ cat_var_form }}
+                <br>
+                <input type="hidden" name="type" value="categorical">
+                <input type="submit" value="Submit">
+            </form>
+
+        </div>
+        <div id="non_cat_var_container" style="display:none">
+
+            <form action="add_variable/" method="POST">
+                {% csrf_token %}
+                <br>
+                {{ var_form }}
+                <br>
+                <input type="submit" value="Submit">
+            </form>
+
+        </div>
+
+        
+    </div>
+
+    <!-- 
+    <form action="/your-name/" method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Submit">
+    </form>
     <button onclick="add_variable()">add variable</button>
     <div id="add_variable_container" style="display:none;">
-        <form action="add_variable/" method="POST" id="add_variable_form" onsubmit="return validateForm()">
+        <form action="add_variable/" method="POST" id="add_variable_form" onsubmit="return validate_form()">
             {% csrf_token %}
             <p>
                 <label for="name">New variable name:</label>
@@ -28,30 +73,90 @@
                 <label for="prompt">New variable prompt:</label>
                 <input type="text" name="prompt" maxlength="254" autofocus="" required="" id="prompt">  
                 <br><br>
-                <button type="submit">Submit</button>
+                <div id="input_categories_container" style="display:none">
+
+                    <label for="choice">Variable response option: </label>
+                    <input type="text" name="choice" maxlength="100" id="choice1">
+                    <br>
+                    <label for="choice">Variable response option: </label>
+                    <input type="text" name="choice" maxlength="100" id="choice2">
+                    <br>
+                    <button type="button" onclick="add_category()">add new choice</button>
+                    <br>
                 
+                </div>
+                <br>
+                <button type="submit">Submit</button>
             </p>            
         </form>
     </div>
 </p>
 <br>
+-->
+<br>
 <a href="/homepage">back to homepage</a>
 <script>
+
     function add_variable() {
-        var x = document.getElementById("add_variable_container");
+        var x = document.getElementById("new_variable_dropdown");
+        var hide_me = document.getElementById("new_categorical_variable_container");
+        var hide_me_too = document.getElementById("non_cat_var_container");
         if (x.style.display=="none") {
             x.style.display = "block";
+            hide_me_too.style.display = "block";
         } else {
             x.style.display = "none";
+            hide_me.style.display = "none";
+            hide_me_too.style.display = "none";
         }
     }
-    function validateForm() {
+    
+    function is_categorical(element) {
+        var cat_var = document.getElementById("new_categorical_variable_container");
+        var non_cat_var = document.getElementById("non_cat_var_container");
+        if (element.value=="categorical") {
+            cat_var.style.display = "block";
+            non_cat_var.style.display = "none";
+        } else {
+            cat_var.style.display = "none";
+            non_cat_var.style.display = "block";
+            var hidden_type = document.createElement("input");
+            hidden_type.setAttribute("type", "hidden");
+            hideen_type.setAttribute("name", "type");
+            if (element.value=="binary") {
+                hidden_type.setAttribute("value", "binary");
+            } else if (element.value=="continuous") {
+                hidden_type.setAttribute("value", "continuous")
+            }
+        }
+    }
+    function add_category() {
+        var line_break = document.createElement("br")
+        var input_label = document.createElement("label");
+        input_label.setAttribute("for", "choice");
+        input_label.innerHTML = "Variable response option: "
+        var input_category = document.createElement("input");
+        input_category.setAttribute("type", "text")
+        input_category.setAttribute("name", "choice")
+        input_category.setAttribute("max_length", 100)
+        input_category.setAttribute("id", "choice")
+        document.getElementById("input_categories_container").appendChild(line_break);
+        document.getElementById("input_categories_container").appendChild(input_label);
+        document.getElementById("input_categories_container").appendChild(input_category);
+        document.getElementById("input_categories_container").appendChild(line_break);
+    }
+    function validate_form() {
         var name = document.forms["add_variable_form"]["name"].value;
         var prompt = document.forms["add_variable_form"]["prompt"].value;
-        if (!name.replace(/\s/g, '').length || !prompt.replace(/\s/g, '').length) {
+        if (!validate_input(name) || !validate_input(prompt)) {
             alert("Name & prompt must be filled out");
             return false;
-        }
+        } else return true;
+    }
+    function validate_input(user_input) {
+        if (!user_input.replace(/\s/g, '').length) {
+            return false;
+        } else return true;
     }
 </script>
 

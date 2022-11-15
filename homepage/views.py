@@ -17,7 +17,7 @@ def edit_variables(request):
     return redirect('/edit_variables')
 
 def input_data(request):
-    return render(request, 'user/input_data.html')
+    return redirect('/input_data')
 
 def logout_user(request):
     logout(request)

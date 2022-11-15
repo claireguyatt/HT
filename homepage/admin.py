@@ -15,4 +15,3 @@ class ProfileAdmin(admin.ModelAdmin):
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Variable)
 admin.site.register(Categorical_Variable)
-#admin.site.register(UserData)

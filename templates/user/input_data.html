@@ -1,1 +1,32 @@
-<h1>input data for a new day!</h1>
+<html>
+    <h1>input data for a new day!</h1>
+    <form action="add_day/" method="POST">
+
+        <label for="date">Date: </label>
+        <input type="date" name="date" required="True" id="date">
+
+        {% csrf_token %}
+        {% for variable in variables.all %}
+        {{ variable }}
+
+            {% if variable.is_continuous %}
+            
+                <label for="{{ variable }}_data">: </label>
+                <input type="number" name="{{ variable }}_data" required="" id="{{ variable }}_data" min="1" max="10"> 
+                <br>
+
+            {% else %}
+
+                <select id="{{ variable }}_data" name="{{ variable }}_data">
+                    {% for cat_var_choice in variable.find_categorical_choices %}
+                    <option value={{cat_var_choice}}>{{ cat_var_choice }}</option>
+                    {% endfor %}
+                </select>
+            
+            {% endif %}
+        {% endfor %} 
+        <button type="submit" name="submit">Submit</button>
+    </form>
+    <a href="/homepage">back to homepage</a>
+</html>    
+
