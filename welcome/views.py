@@ -1,8 +1,8 @@
 from email.utils import format_datetime
-from xml.dom import ValidationErr
-from django.shortcuts import HttpResponse, render, redirect
+from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib import messages
+from django.contrib.messages import get_messages
 
 from .forms import NewUserForm
 from homepage.models import Profile, Variable
@@ -10,11 +10,13 @@ from homepage.models import Profile, Variable
 def index(request):
     return render(request, 'welcome.html')
 
-# take user to registration page (if GET) or register new user (If POST)
+# take user to registration page (if GET) or register new user (if POST)
 def register(request):
+    
     if request.user.is_authenticated:
         return redirect('/homepage')
     if request.method == "POST":
+        
         form = NewUserForm(request.POST)
         if form.is_valid():
             user = form.save()
@@ -34,6 +36,8 @@ def register(request):
             login(request, user)
             print("Registration successful.")
             return redirect('/homepage')
-        print(form.error_messages)
+
+        messages.warning(request, form.errors)
         print("Unsuccessful registration. Invalid information.")
+        
     return render(request, 'registration/register.html', {'form': NewUserForm})

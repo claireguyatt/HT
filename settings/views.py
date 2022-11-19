@@ -23,9 +23,22 @@ def change_username(request):
         return render(request, 'user/success.html')
     return redirect('/welcome')
 
+def edit_profile(request):
+    if request.user.is_authenticated:
+        user = User.objects.get(id=request.user.id)
+        if request.POST.get("new_dob"):
+            user.profile.dob = request.POST.get("new_dob")
+        if request.POST.get("new_gender"):
+            user.profile.dob = request.POST.get("gender")
+        user.save()
+        return render(request, 'user/success.html')
+    return redirect('/welcome')
+            
+
 def delete_account(request):
     if request.user.is_authenticated:
         user = User.objects.get(id=request.user.id)
         user.delete()
         return redirect('/')
+
 

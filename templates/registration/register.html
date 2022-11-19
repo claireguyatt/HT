@@ -1,10 +1,12 @@
 <html>
     <body>
+        {% include 'includes/messages.html' %}
         <h2>Register</h2>
         <form action='/welcome/register/' method='POST'>
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Register Now</button>
         </form>
+        <a href="/">Back</a>
     </body>
 </html>

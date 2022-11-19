@@ -8,9 +8,24 @@
 
         <h1>Settings</h1>
         <lu>
-            <li><button onclick="edit_profile()">edit profile</button></li>
+            <li><button onclick="show_div('edit-profile-container')">Edit profile</button></li>
+            <div id="edit-profile-container" style="display:none">
+                <form action="edit_profile/" method="POST">
+                    {% csrf_token %}
+                    <label for="dob">Date of birth:</label>
+                    <input type="date" name="new_dob" id="dob">
+                    <label for="gender">Gender:</label>
+                    <select id="gender" name="new_gender">
+                        <option value="Female">Female</option>
+                        <option value="Male">Male</option>
+                        <option value="Non binary">Non binary</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
             <br>
-            <li><button onclick="change_username()">change username</button></li>
+            <li><button onclick="show_div('change_username_container')">change username</button></li>
             <div id="change_username_container" style="display:none">
                 <form action="change_username/" method="POST">
                     {% csrf_token %}
@@ -25,7 +40,7 @@
                 </form>
             </div>
             <br>
-            <li><button onclick="change_email()">change email</button></li>
+            <li><button onclick="show_div('change_email_container')">Change Email</button></li>
             <div id="change_email_container" style="display:none">
                 <form action="change_email/" method="POST">
                     {% csrf_token %}
@@ -44,7 +59,7 @@
             <br>
             <li><a href="/homepage/password_reset">forgot password</a></li>
             <br>
-            <li><button onclick="delete_account()">delete account</button></li>
+            <li><button onclick="show_div('delete_account_container')">delete account</button></li>
             <div id="delete_account_container" style="display:none;">
                 <p>are you sure you want to delete your account?</p>
                 <a href="delete_account/">Yes, delete my account</a>
@@ -56,32 +71,8 @@
         <a href="/homepage">back to homepage</a>
 
         <script>
-            function delete_account() {
-                var x = document.getElementById("delete_account_container");
-                if (x.style.display=="none") {
-                    x.style.display = "block";
-                } else {
-                    x.style.display = "none";
-                }
-            }
-            function change_email() {
-                var x = document.getElementById("change_email_container");
-                if (x.style.display=="none") {
-                    x.style.display = "block";
-                } else {
-                    x.style.display = "none";
-                }
-            }
-            function change_username() {
-                var x = document.getElementById("change_username_container");
-                if (x.style.display=="none") {
-                    x.style.display = "block";
-                } else {
-                    x.style.display = "none";
-                }
-            }
-            function edit_profile() {
-                var x = document.getElementById("edit_profile_container");
+            function show_div(div) {
+                var x = document.getElementById(div);
                 if (x.style.display=="none") {
                     x.style.display = "block";
                 } else {

@@ -7,16 +7,16 @@
 
         {% csrf_token %}
         {% for variable in variables.all %}
-        {{ variable }}
 
             {% if variable.is_continuous %}
             
-                <label for="{{ variable }}_data">: </label>
+                <label for="{{ variable }}_data">{{ variable.prompt }}</label>
                 <input type="number" name="{{ variable }}_data" required="" id="{{ variable }}_data" min="1" max="10"> 
                 <br>
 
             {% else %}
-
+                <br>
+                {{ variable.prompt }}
                 <select id="{{ variable }}_data" name="{{ variable }}_data">
                     {% for cat_var_choice in variable.find_categorical_choices %}
                     <option value={{cat_var_choice}}>{{ cat_var_choice }}</option>

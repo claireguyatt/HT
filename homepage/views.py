@@ -6,7 +6,10 @@ from django.contrib.auth import logout
 
 def index(request):
     if request.user.is_authenticated:
-        return render(request, 'user/homepage.html')
+        context = {
+            "data": request.user.profile.get_data().to_html()
+        }
+        return render(request, 'user/homepage.html', context)
     else:
         return logout_user(request)
 
