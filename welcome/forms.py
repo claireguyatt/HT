@@ -2,16 +2,11 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
+from .models import GENDER_CHOICES
+
 import datetime
 
 # Create your forms here.
-
-GENDER_CHOICES = (
-    ("Female", "Female"),
-    ("Male", "Male"),
-    ("Nonbinary", "Nonbinary"),
-    ("Other", "Other")
-)
 
 def validate_date(input_date):
 	if input_date > datetime.date.today():

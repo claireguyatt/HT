@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from .forms import VariableForm, CategoricalVariableForm
+from .models import Variable, CategoricalVariable
 
 # Register your models here.
 
-admin.site.register(VariableForm)
-admin.site.register(CategoricalVariableForm)
+admin.site.register(Variable)
+admin.site.register(CategoricalVariable)

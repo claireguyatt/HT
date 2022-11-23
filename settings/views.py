@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 
-from homepage.models import User
+from welcome.models import User
+from edit_variables.models import Variable
 
 # Create your views here.
 
@@ -33,12 +34,19 @@ def edit_profile(request):
         user.save()
         return render(request, 'user/success.html')
     return redirect('/welcome')
-            
 
 def delete_account(request):
     if request.user.is_authenticated:
+
+        user_vars = list(Variable.objects.filter(users=request.user.profile))
+
         user = User.objects.get(id=request.user.id)
         user.delete()
+
+        # delete associated variables if not attached to another account
+        for var in user_vars:
+            var.check_delete()
+
         return redirect('/')
 
 

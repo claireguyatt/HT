@@ -1,5 +1,4 @@
-from django.shortcuts import HttpResponse, render, redirect
-from .models import Profile
+from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 
 # Create your views here.

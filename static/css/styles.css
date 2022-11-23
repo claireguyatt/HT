@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Bigelow+Rules&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+* {
+    background: #EDC7B7;
+    text-align: center;
+    font-family: 'Space Grotesk', sans-serif;
+    margin: auto;
+    color: #4F4846;
+}
+a {
+    text-decoration: none;
+}
+a:hover {
+    color: #123C69;
+    text-decoration: none;
+}
+button {
+    background-color: none;
+    border: none;
+    font-family: 'Space Grotesk', sans-serif;
+    outline: none;
+}
+button:hover {
+    color: #123C69;
+    text-decoration: none;
+    cursor:pointer;
+    outline: none;
+}
+input {
+    outline: none;
+    border-color: #E8CEBF;
+    background-color: #FFFFF0;
+  }
+
+/*
+
+Makeup Tan: #EDC7B7
+
+Blush: #E8CEBF
+
+Complimentary Green: #266150
+
+Dark Highlight: #4F4846
+
+Lightly Off White: #FDF8F5
+
+Navy: #123C69
+
+*/

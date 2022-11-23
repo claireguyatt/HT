@@ -1,13 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
 
-<div>
-    <h1>Home</h1>
-    <a href="settings">Settings</a>
-    <a href="edit_variables">Add/Delete Variables</a>
-    <a href="logout_user">Logout</a>
-    <a href="input_data">New Day</a>
-</div>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}"/>
+        <title>Home</title>
+    </head>
 
-<div>
-    <br>
-    {{ data|safe }}
-</div>
+    <body>
+
+        {% include 'includes/header.html' %}
+
+        <div>
+            <br>
+            {{ data|safe }}
+        </div>
+
+    </body>
+</html>

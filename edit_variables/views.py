@@ -2,10 +2,8 @@ from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.contrib import messages
 from .forms import VariableForm, CategoricalVariableForm
-from homepage.models import Variable, CategoricalVariable
-
-import pandas as pd
-
+from .models import Variable, CategoricalVariable
+from django.utils.translation import gettext_lazy as _
 
 # Create your views here.
 
@@ -16,7 +14,6 @@ def index(request):
         "var_form": VariableForm(),
         "cat_var_form": CategoricalVariableForm(),
         "num_vars": request.user.profile.variables.count(),
-        "num_choices": 2
     }
     return render(request, 'user/edit_variables.html', context)
 
@@ -24,7 +21,7 @@ def delete(request):
     if request.user.is_authenticated:
         if request.method == "POST":
             variable_to_delete = request.POST.get("variable")
-            delete_id = Variable.objects.get(name=variable_to_delete).id
+            delete_id = request.user.profile.variables.get(name=variable_to_delete).id
             request.user.profile.variables.remove(delete_id)
 
             # delete associated user data
@@ -37,8 +34,7 @@ def delete(request):
             
             # delete from db if no longer attached to a user profile
             var = Variable.objects.get(id=delete_id)
-            if not var.users.all():
-               Variable.objects.get(id=delete_id).delete()
+            var.check_delete()
     
     return redirect('/edit_variables')
 
@@ -48,8 +44,14 @@ def add_variable(request):
 
             # make variable
             var_type = request.POST.get("type")
+            print(var_type)
             var_prompt = request.POST.get("prompt")
             var_name = request.POST.get("name")
+
+            # error if name is taken
+            if request.user.profile.variables.filter(name=var_name).exists():
+                messages.warning(request, "Variable " + var_name + " already exists.")
+                return redirect('/edit_variables')
 
             if var_type == "categorical":
                 form = CategoricalVariableForm(request.POST)
@@ -58,17 +60,13 @@ def add_variable(request):
 
             if form.is_valid():
 
-                print(var_type)
-
                 if var_type == "binary":
-                    print("TEST")
                     new_variable = CategoricalVariable.objects.create(name=var_name, prompt=var_prompt, is_continuous=False, choices="Y,N")
                 elif var_type == "categorical":
                     var_choices = request.POST.get("choices")
                     new_variable = CategoricalVariable.objects.create(name=var_name, prompt=var_prompt, is_continuous=False, choices=var_choices)
                 else:
                     new_variable = Variable.objects.create(name=var_name, prompt=var_prompt, is_continuous=True)
-                
                 request.user.profile.variables.add(new_variable)
             
             else:

@@ -99,45 +99,10 @@
         
     </div>
 
-    <!-- 
-    <form action="/your-name/" method="POST">
-        {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Submit">
-    </form>
-    <button onclick="add_variable()">add variable</button>
-    <div id="add_variable_container" style="display:none;">
-        <form action="add_variable/" method="POST" id="add_variable_form" onsubmit="return validate_form()">
-            {% csrf_token %}
-            <p>
-                <label for="name">New variable name:</label>
-                <input type="text" name="name" maxlength="100" autofocus="" required="" id="name">  
-                <br><br>
-                <label for="prompt">New variable prompt:</label>
-                <input type="text" name="prompt" maxlength="254" autofocus="" required="" id="prompt">  
-                <br><br>
-                <div id="input_categories_container" style="display:none">
-
-                    <label for="choice">Variable response option: </label>
-                    <input type="text" name="choice" maxlength="100" id="choice1">
-                    <br>
-                    <label for="choice">Variable response option: </label>
-                    <input type="text" name="choice" maxlength="100" id="choice2">
-                    <br>
-                    <button type="button" onclick="add_category()">add new choice</button>
-                    <br>
-                
-                </div>
-                <br>
-                <button type="submit">Submit</button>
-            </p>            
-        </form>
-    </div>
-</p>
-<br>
--->
 <br>
 <a href="/homepage">back to homepage</a>
+
+
 <script>
 
     function add_variable() {
@@ -172,6 +137,7 @@
                 hidden_type.setAttribute("value", "continuous");
             }
             var add_type = document.getElementById("non-cat-form");
+            console.log(hidden_type);
             add_type.appendChild(hidden_type);
         }
     }

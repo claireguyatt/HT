@@ -1,47 +1,27 @@
 from django.db import models
+
 from django.contrib.auth.models import User
-from django.core.validators import validate_slug
-from django.core.exceptions import ValidationError
+from edit_variables.models import Variable
 
 import pandas as pd
 
-# models
+# Profile model manager
 
-class Variable(models.Model):
-    name = models.CharField(max_length=30, unique=True)
-    prompt = models.CharField(max_length=250)
-    is_continuous = models.BooleanField(default=False)
+class ProfileManager(models.Manager):
+        
+    def create_profile(self, user, username, email, number, gender, dob):
 
-    # return human-readable string for each object
-    def __str__(self):
-        return self.name
+        profile = self.create(user=user, username=username, email=email, number=number, gender=gender, dob=dob)
+        
+        # add default variables
+        default_vars = ["Happiness", "Sleep", "Temp", "Weather"]
+        for var in default_vars:
+            v = Variable.objects.get(name=var)
+            profile.variables.add(v)
+        
+        return profile
 
-    # return URL for inidvidual model records
-    # django automatically gives each object an id (primary key)
-    def get_absolute_url(self):
-        return 'model-detail-view', [str(self.id)]
-
-    def find_categorical_choices(self):
-        cat_var = CategoricalVariable.objects.get(name=self.name)
-        return cat_var.choices.split(",")
-    
-    def is_cat_non_binary(self):
-        if (CategoricalVariable.objects.filter(name=self.name).exists() and not CategoricalVariable.objects.get(name=self.name).is_binary):
-            return True
-        return False
-
-    def get_choices(self):
-        if self.is_cat_non_binary:
-            return CategoricalVariable.objects.get(name=self.name).choices
-        return None
-
-
-# subclass of variable model
-class CategoricalVariable(Variable):
-    
-    # if binary, choices are automatically Y/N
-    is_binary = models.BooleanField(default=True)
-    choices = models.CharField(max_length=500)
+# Profile model
 
 GENDER_CHOICES = (
     ("Female", "Female"),
@@ -60,6 +40,8 @@ class Profile(models.Model):
     variables = models.ManyToManyField(Variable, related_name="users")
     data = models.JSONField(default=dict)
 
+    objects = ProfileManager()
+
     # return human-readable string for each object
     def __str__(self):
         return (self.username)
@@ -71,22 +53,17 @@ class Profile(models.Model):
     def get_categorical(self):
         return self.variables.all().filter(is_continuous=False)
 
+    # return user data in pd
     def get_data(self):
 
-        # if no data return false
+        # if no data return empty dataframe
         if (len(self.data) == 0):
             return pd.DataFrame()
 
-        # else convert user data to df & return
-        #data_as_dict = json.loads(self.data)
-        #index = data_as_dict.get('index')
-        #columns = data_as_dict.get("columns")
-        #rows = data_as_dict.get("data")
-
+        # otherwise return user's data
         index = self.data.get('index')
         columns = self.data.get("columns")
         rows = self.data.get("data")
-
         return pd.DataFrame(rows, index, columns)
 
     # add data to user profile from user input
@@ -113,16 +90,3 @@ class Profile(models.Model):
             
         # save profile data
         self.save()
-    
-        
-        
-
-
-    
-
-    
-
-    
-
-
-

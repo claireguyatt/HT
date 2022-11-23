@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'homepage.apps.HomepageConfig'
+    'welcome.apps.WelcomeConfig',
+    'edit_variables.apps.EditVariablesConfig',
 ]
 
 MIDDLEWARE = [
@@ -144,3 +145,9 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
+
