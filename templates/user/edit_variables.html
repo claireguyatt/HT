@@ -1,184 +1,209 @@
+{% load static %}
 <!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}"/>
+        <title>Edit Variables</title>
+    </head>
+    <style>
+        .edit-variables-page-container {
+            margin-left: 25%;
+            margin-right: 25%;
+            width: 50%;
+        }
+        .edit-variables-page-container button, a {
+            font-size: 100%;
+            width: 100%;
+            text-align: center;
+        }
+        .edit-variables-page-container label {
+            text-align: left;
+        }
+        .edit-variables-page-container input {
+            width: 100%;
+            clear: right;
+            text-align: left;
+        }
+        th, td {
+            padding-top: 8px;
+            padding-bottom: 8px;
+            padding-left: 8px;
+            padding-right: 8px;
+            background-color: #FFFFF0;
+        }
+        p {
+            padding: 3%;
+        }
+        button {
+            background-color: #FFFFF0;
+        }
+        select {
+            outline: none;
+            border-color: #E8CEBF;
+            background-color: #FFFFF0;
+            font-size: 110%;
+            margin: 1%;
+        }
+    </style>
+    <body>
 
-<head></head>
-<body>
+    {% include 'includes/messages.html' %}
+    {% include 'includes/header.html' %}
 
-{% include 'includes/messages.html' %}
+    <div class="edit-variables-page-container">
 
-<h1>Edit Variables</h1>
+    <h2>Edit Variables</h2>
 
-<p> Note that deleting a variable will delete all of its associated data!!!!</p>
-    <table>
+        <table>
 
-        {% for variable in variables.all %}
+            {% for variable in variables.all %}
 
-        <tr>
-            <td>{{ variable }}</td>
-            <td>
-            <form action="delete/" method="POST">
-                {% csrf_token %}
-                <button type="submit" name="variable" value={{variable}}>delete</button>
-            </form>
-            </td>
-
-            {% if variable.is_cat_non_binary %}
-
-                <td><button name="edit-choices" onClick="edit_choices()">Edit variable choices</button></td>
-                <div id="edit-choices-container" style="display: none">
-                    <p>Old choices: </p>
-                    <span>{{ variable.get_choices }}</span> 
-                    <form action="edit_choices/" method="POST">
-                        {% csrf_token %}
-                        <label for="choices">New choices:</label>
-                        <input type="text" name="choices">
-                        <input type="hidden" name="variable" value={{variable}}>
-                        <button type="submit">Submit</button>
-                    </form>
-                </div>
-
-            {% endif %}
-
-        </tr>
-        {% endfor %}
-    </table>
-    <br>
-
-    {% if num_vars < 11 %}
-
-        <div id="new_variable_container">
-            <button onclick="add_variable()">Add variable</button>
-            <div id="new_variable_dropdown" style="display:none">
-                <label for="type">Variable type:</label>
-                <select id="type" name="type" onChange="is_categorical(this)">
-                    <option value="continuous">Continuous</option>
-                    <option value="binary">Binary</option>
-                    <option value="categorical">Categorical</option>
-                </select>
-                <br>
-            </div>
-            <div id="new_categorical_variable_container" style="display:none">
-
-                <form action="add_variable/" method="POST">
+            <tr>
+                <td style="font-weight: bold;">{{ variable }}</td>
+                <td>
+                <form action="delete/" method="POST">
                     {% csrf_token %}
-                    <br> 
-                    {{ cat_var_form }}
-                    <br>
-                    <div id="input_categories_container">
+                    <button type="submit" name="variable" value="{{variable}}">Delete</button>
+                </form>
+                </td>
 
-                        <label for="choice">Variable response option: </label>
-                        <input type="text" name="choice" maxlength="100" id="choice">
-                        <div id="add-category-button-container">
-                            <br>
-                            <button type="button" onclick="add_category()">add new choice</button>
-                            <br>
-                        </div>
+                {% if variable.is_cat_non_binary %}
+
+                    <td><button name="edit-choices" onClick="edit_choices()">Edit variable choices</button></td>
+                    <div id="edit-choices-container" style="display: none">
+                        <p>Old choices: </p>
+                        <span>{{ variable.get_choices }}</span> 
+                        <form action="edit_choices/" method="POST">
+                            {% csrf_token %}
+                            <label for="choices">New choices:</label>
+                            <input type="text" name="choices">
+                            <input type="hidden" name="variable" value={{variable}}>
+                            <button type="submit" style="font-weight: normal">Submit</button>
+                        </form>
                     </div>
-                    <input type="hidden" name="type" value="categorical">
-                    <input type="submit" value="Submit">
-                </form>
 
-            </div>
-            <div id="non_cat_var_container" style="display:none">
+                {% endif %}
 
-                <form id="non-cat-form" action="add_variable/" method="POST">
-                    {% csrf_token %}
+            </tr>
+            {% endfor %}
+        </table>
+        <p> Note that deleting a variable will delete all of its associated data.</p>
+
+        {% if num_vars < 11 %}
+
+            <div id="new_variable_container">
+                <button onclick="add_variable()" style="background:none; padding-bottom: 3%; margin: auto">Add variable</button>
+                <div id="new-variable-input-container" style="display:none">
+                    <label for="type">Variable type:</label>
+                    <select id="type" name="type" onChange="check_var_type(this)">
+                        <option value="continuous">Continuous</option>
+                        <option value="binary">Binary</option>
+                        <option value="categorical">Categorical</option>
+                    </select>
                     <br>
-                    {{ var_form }}
-                    <br>
-                    <input type="submit" value="Submit">
-                </form>
+                    <div id="new_variable_form_container">
 
-            </div>
-        
-        {% else %}
+                        <form action="add_variable/" method="POST" id="new-variable-form" style="padding-bottom: 3%;  
+                        width: 100%;
+                        text-align: left;
+                        clear: both;">
+                            {% csrf_token %}
+                            {{ var_form }}
+                            
+                            <div id="categorical-variable-container" style="display: none;">
+                                    <ul id="categories-list">
+                                        <li id="category-input"><label for="choice" style="float:left;">Variable response option: </label>
+                                        <input type="text" name="choice" maxlength="100" id="choice"></li>
+                                        <li id="category-input"><label for="choice" style="float:left;">Variable response option: </label>
+                                        <input type="text" name="choice" maxlength="100" id="choice"></li>
+                                    </ul>
+                                <div id="add-category-button-container">
+                                        <button type="button" onclick="add_category()" style="width: auto; margin-top:2%;">Add new choice</button>
+                                </div>
+                                <div id="delete-category-button-container" style="display:none;">
+                                    <button type="button" onclick="delete_category()" style="width: auto; margin-top:2%;">Delete choice</button>
+                                </div>
+                            </div>
+                            <button type="submit" value="Submit" style="background: none; padding-top: 4%; font-weight: bold;">Submit</button>
+                        </form>
+                    </div>
+            
+            {% else %}
 
-            <p>Cannot add another variable (10 max). Happiness is simple there defs aren't that many factors :)</p>
-        
-        {% endif %}
-
-        
+                <p>Cannot add another variable (10 max). Happiness is simple there defs aren't that many factors :)</p>
+            
+            {% endif %}   
+            </div>         
+        </div>
+        <a href="/homepage" style="margin-top: 2%;">Back</a>
     </div>
 
-<br>
-<a href="/homepage">back to homepage</a>
+    <script>
 
-
-<script>
-
-    function add_variable() {
-        var x = document.getElementById("new_variable_dropdown");
-        var hide_me = document.getElementById("new_categorical_variable_container");
-        var hide_me_too = document.getElementById("non_cat_var_container");
-        if (x.style.display=="none") {
-            x.style.display = "block";
-            hide_me_too.style.display = "block";
-        } else {
-            x.style.display = "none";
-            hide_me.style.display = "none";
-            hide_me_too.style.display = "none";
+        function add_variable() {
+            var x = document.getElementById("new-variable-input-container");
+            if (x.style.display=="none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
         }
-    }
-    
-    function is_categorical(element) {
-        var cat_var = document.getElementById("new_categorical_variable_container");
-        var non_cat_var = document.getElementById("non_cat_var_container");
-        if (element.value=="categorical") {
-            cat_var.style.display = "block";
-            non_cat_var.style.display = "none";
-        } else {
-            cat_var.style.display = "none";
-            non_cat_var.style.display = "block";
+        
+        function check_var_type(element) {
+            var new_var = document.getElementById("new_variable_form_container");
+            new_var.style.display = "block";
             var hidden_type = document.createElement("input");
             hidden_type.setAttribute("type", "hidden");
             hidden_type.setAttribute("name", "type");
-            if (element.value=="binary") {
-                hidden_type.setAttribute("value", "binary");
-            } else if (element.value=="continuous") {
-                hidden_type.setAttribute("value", "continuous");
+            var cat_var = document.getElementById("categorical-variable-container");
+            if (element.value == "categorical") {
+                cat_var.style.display = "block";
+                hidden_type.setAttribute("value", "categorical");
+            } else {
+                cat_var.style.display = "none";
+                if (element.value=="binary") {
+                    hidden_type.setAttribute("value", "binary");
+                } else if (element.value=="continuous") {
+                    hidden_type.setAttribute("value", "continuous");
+                }
             }
-            var add_type = document.getElementById("non-cat-form");
-            console.log(hidden_type);
+            var add_type = document.getElementById("new-variable-form");
             add_type.appendChild(hidden_type);
         }
-    }
 
-    var num_categories = 2;
+        var num_categories = 2;
 
-    function add_category() {
-        num_categories = num_categories+1;
-        var line_break = document.createElement("br");
-        var input_label = document.createElement("label");
-        input_label.setAttribute("for", "choice");
-        input_label.innerHTML = "Variable response option: "
-        var input_category = document.createElement("input");
-        input_category.setAttribute("type", "text");
-        input_category.setAttribute("name", "choice");
-        input_category.setAttribute("max_length", 100);
-        input_category.setAttribute("id", "choice");
-        document.getElementById("input_categories_container").appendChild(line_break);
-        document.getElementById("input_categories_container").appendChild(input_label);
-        document.getElementById("input_categories_container").appendChild(input_category);
-        document.getElementById("input_categories_container").appendChild(line_break);
-        if (num_categories == 10) {
-            document.getElementById("add-category-button-container").style.display = "none";
-        }
-    }
-
-    function edit_choices(variable) {
-        var x = document.getElementById("edit-choices-container");
-        if (x.style.display=="none") {
-            x.style.display = "block";
-            hide_me_too.style.display = "block";
-        } else {
-            x.style.display = "none";
-            hide_me.style.display = "none";
-            hide_me_too.style.display = "none";
+        function add_category() {
+            num_categories = num_categories+1;
+            new_response = document.getElementById("category-input").cloneNode(true);
+            console.log(new_response)
+            document.getElementById("categories-list").appendChild(new_response)
+            document.getElementById("delete-category-button-container").style.display = "block";
+            if (num_categories == 8) {
+                document.getElementById("add-category-button-container").style.display = "none";
+            }
         }
 
+        function delete_category() {
+            num_categories = num_categories-1;
+            var list = document.getElementById("categories-list")
+            list.removeChild(list.lastElementChild)
+            document.getElementById("add-category-button-container").style.display = "block";
+            if (num_categories == 2) {
+                document.getElementById("delete-category-button-container").style.display = "none";
+            }
+        }
 
-    }
-
-</script>
-
-</body>
+        function edit_choices(variable) {
+            var x = document.getElementById("edit-choices-container");
+            if (x.style.display=="none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+    </body>
+</html>
 

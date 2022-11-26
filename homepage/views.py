@@ -5,8 +5,12 @@ from django.contrib.auth import logout
 
 def index(request):
     if request.user.is_authenticated:
+        if request.user.profile.get_data().empty:
+            data = None
+        else:
+            data = request.user.profile.get_data().to_html()
         context = {
-            "data": request.user.profile.get_data().to_html()
+            "data": data
         }
         return render(request, 'user/homepage.html', context)
     else:

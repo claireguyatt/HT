@@ -2,10 +2,10 @@
 
 * {
     background: #EDC7B7;
-    text-align: center;
     font-family: 'Space Grotesk', sans-serif;
     margin: auto;
     color: #4F4846;
+    text-align: center;
 }
 a {
     text-decoration: none;
@@ -23,14 +23,17 @@ button {
 button:hover {
     color: #123C69;
     text-decoration: none;
-    cursor:pointer;
+    cursor: pointer;
     outline: none;
 }
 input {
     outline: none;
     border-color: #E8CEBF;
     background-color: #FFFFF0;
-  }
+}
+h2 {
+    padding: 2%;
+}
 
 /*
 

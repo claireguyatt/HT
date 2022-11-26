@@ -8,26 +8,56 @@
         <title>Register</title>
     </head>
     <style>
-        form {
-            width: 75%;
-            margin-left: 15%;
-            padding-top: 10%;
+        .register-page-container {
+            margin-left: 25%;
+            margin-right: 25%;
+            width: 50%;
+            padding-top: 5%;
             padding-bottom: 5%;
         }
+        .register-page-container input {
+            width: 100%;
+            clear: both;
+        }
+        li {
+            text-align: left;
+        }
+        p {
+            text-align: left;
+            padding: 1%;
+        }
+        button {
+            font-size: 120%;
+            font-weight: bold;
+            padding-bottom: 2%
+        }
+        select {
+            outline: none;
+            border-color: #E8CEBF;
+            background-color: #FFFFF0;
+            font-size: 110%;
+        }
         label {
+            font-weight: bold;
+        }
+        input {
             text-align: left;
         }
     </style>
     <body>
-        {% include 'includes/messages.html' %}
+        <div class="register-page-container">
+            
+            {% include 'includes/messages.html' %}
 
-        <div id="regigster-form-container" style="text-align:left">
-            <form action='/welcome/register/' method='POST'>
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Register Now</button>
-            </form>
+            <div id="register-form-container">
+                <form action='/welcome/register/' method='POST'>
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Register Now</button>
+                </form>
+            </div>
+            <a href="/">Go Back</a>
+
         </div>
-        <a href="/">Back</a>
     </body>
 </html>

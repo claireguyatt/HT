@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.contrib import messages
-from .forms import VariableForm, CategoricalVariableForm
+from .forms import VariableForm
 from .models import Variable, CategoricalVariable
 from django.utils.translation import gettext_lazy as _
 
@@ -12,7 +12,6 @@ def index(request):
     context = {
         "variables": request.user.profile.variables.filter(~Q(name="Happiness")),
         "var_form": VariableForm(),
-        "cat_var_form": CategoricalVariableForm(),
         "num_vars": request.user.profile.variables.count(),
     }
     return render(request, 'user/edit_variables.html', context)
@@ -26,7 +25,7 @@ def delete(request):
 
             # delete associated user data
             df = request.user.profile.get_data()
-            var_name = variable_to_delete + "_data"
+            var_name = variable_to_delete
             if var_name in df.columns:
                 df = df.drop(var_name, axis=1)
                 request.user.profile.data = df.to_dict(orient='split')
@@ -44,7 +43,6 @@ def add_variable(request):
 
             # make variable
             var_type = request.POST.get("type")
-            print(var_type)
             var_prompt = request.POST.get("prompt")
             var_name = request.POST.get("name")
 
@@ -53,18 +51,18 @@ def add_variable(request):
                 messages.warning(request, "Variable " + var_name + " already exists.")
                 return redirect('/edit_variables')
 
-            if var_type == "categorical":
-                form = CategoricalVariableForm(request.POST)
-            else: 
-                form = VariableForm(request.POST)
+            form = VariableForm(request.POST)
 
             if form.is_valid():
 
                 if var_type == "binary":
                     new_variable = CategoricalVariable.objects.create(name=var_name, prompt=var_prompt, is_continuous=False, choices="Y,N")
+                    print("heyyy")
                 elif var_type == "categorical":
-                    var_choices = request.POST.get("choices")
-                    new_variable = CategoricalVariable.objects.create(name=var_name, prompt=var_prompt, is_continuous=False, choices=var_choices)
+                    var_choices = request.POST.get("choice")
+                    print(var_choices)
+                    new_variable = CategoricalVariable.objects.create(name=var_name, prompt=var_prompt, is_continuous=False, choices=var_choices, is_binary=False)
+                    print("hello")
                 else:
                     new_variable = Variable.objects.create(name=var_name, prompt=var_prompt, is_continuous=True)
                 request.user.profile.variables.add(new_variable)

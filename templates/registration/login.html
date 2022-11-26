@@ -2,46 +2,48 @@
 <!DOCTYPE html>
 
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}"/>
-        <title>HT: Welcome</title>
-    </head>
-    <style>
-      h1 {
-        padding-top:10%;
-        padding-bottom:5%;
-      }
-      input {
-        margin-top: 1%
-      }
-      form {
-        padding-top: 10%;
-        padding-bottom: 5%;
-      }
-      button {
-        margin-top: 3%;
-        font-size: 110%;
-      }
-      input {
-        outline: none;
-        border-color: #E8CEBF;
-        background-color: #FFFFF0;
-      }
+  <head>
+      <meta charset="UTF-8">
+      <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}"/>
+      <title>HT: Welcome</title>
+  </head>
+  <style>
+    * {
+      margin: auto;
+      text-align: center;
+    }
+    input {
+      margin-top: 1%
+    }
+    form {
+      padding-bottom: 5%;
+    }
+    button {
+      margin-top: 3%;
+      font-size: 110%;
+    }
+    .error-message-container {
+      margin-top: 10%
+    }
 
-    </style>
-    <body>
-
-      {% include 'includes/messages.html' %}
-      <div id="form-container">
-        <form method='POST'>
-            <!-- csrf for security -->
-          {% csrf_token %}
-          {{ form.as_p }}
-          <button type="submit">Log In</button>
-        </form>
-      </div>
-      <a href="/">Go Back</a>
+  </style>
+  <body>
+    
+    <div class="error-message-container">
+      {% if form.errors %}
+        <p>Account not found.</p>
+      {% endif %}
+    </div>
+    
+    <div id="form-container">
+      <form method='POST'>
+          <!-- csrf for security -->
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Log In</button>
+      </form>
+    </div>
+    <a href="/">Go Back</a>
 
   </body>
 </html>

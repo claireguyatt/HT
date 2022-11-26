@@ -30,7 +30,10 @@ def register(request):
             print("Registration successful.")
             return redirect('/homepage')
 
-        messages.warning(request, form.errors)
+        for field, errors in form.errors.items():
+            print('Field: {} Errors: {}'.format(field, ','.join(errors)))
+            messages.warning(request, errors)
+            
         print("Unsuccessful registration. Invalid information.")
         
     return render(request, 'registration/register.html', {'form': NewUserForm})

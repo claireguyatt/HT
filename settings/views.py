@@ -1,12 +1,22 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
+
+from datetime import datetime
 
 from welcome.models import User
 from edit_variables.models import Variable
+from welcome.forms import validate_date
 
 # Create your views here.
 
 def index(request):
-    return render(request, 'user/settings.html')
+    print(request.user.profile.dob)
+    context = {
+        "dob": request.user.profile.dob,
+        "gender": request.user.profile.gender
+    } 
+
+    return render(request, 'user/settings.html', context)
 
 def change_email(request):
     if request.user.is_authenticated:
@@ -26,12 +36,24 @@ def change_username(request):
 
 def edit_profile(request):
     if request.user.is_authenticated:
+
         user = User.objects.get(id=request.user.id)
-        if request.POST.get("new_dob"):
-            user.profile.dob = request.POST.get("new_dob")
-        if request.POST.get("new_gender"):
-            user.profile.dob = request.POST.get("gender")
-        user.save()
+
+        new_date = datetime.strptime(request.POST.get("new_dob"), '%Y-%m-%d').date()
+        try: 
+            validate_date(new_date)
+            user.profile.dob = new_date
+        except Exception as e:
+            print(e)
+            messages.warning(request, e)
+            print(messages)
+            return render(request, 'user/settings.html')
+
+        user.profile.dob = new_date
+        
+        user.profile.gender = request.POST.get("new_gender")
+        user.profile.save()
+
         return render(request, 'user/success.html')
     return redirect('/welcome')
 

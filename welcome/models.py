@@ -14,7 +14,7 @@ class ProfileManager(models.Manager):
         profile = self.create(user=user, username=username, email=email, number=number, gender=gender, dob=dob)
         
         # add default variables
-        default_vars = ["Happiness", "Sleep", "Temp", "Weather"]
+        default_vars = ["Sleep", "Temp", "Weather", "Happiness"]
         for var in default_vars:
             v = Variable.objects.get(name=var)
             profile.variables.add(v)
@@ -26,15 +26,15 @@ class ProfileManager(models.Manager):
 GENDER_CHOICES = (
     ("Female", "Female"),
     ("Male", "Male"),
-    ("Nonbinary", "Nonbinary"),
+    ("Non binary", "Non binary"),
     ("Other", "Other")
 )
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    username = models.CharField(max_length=20, help_text='Enter your username here')
-    email = models.EmailField(max_length=254, help_text='Enter your email here')
-    number = models.CharField(max_length=11, help_text='Enter your phone number here')
+    username = models.CharField(max_length=150)
+    email = models.EmailField(max_length=254, help_text='Required. Enter your email.')
+    number = models.CharField(max_length=11, help_text='Enter your phone number.')
     gender = models.CharField(max_length=20, choices=GENDER_CHOICES, default='Female')
     dob = models.DateField()
     variables = models.ManyToManyField(Variable, related_name="users")
@@ -79,14 +79,25 @@ class Profile(models.Model):
         # if previous data is empty, disregard
         if (old_data.empty):
             df = pd.DataFrame(new_data, index=[0])
+            # keep happiness at the end
+            happiness_col = df.pop("Happiness")
+            df["Happiness"] = happiness_col
+            df = df.fillna(" ")
             self.data = df.set_index('date').to_dict(orient='split')
 
         # otherwise connvert previous data to dataframe & add new data
         else:
             new_df = pd.DataFrame(new_data, index=[0])
             new_df = new_df.set_index('date')
-            old_data = old_data.append(new_df)
-            self.data = old_data.to_dict(orient='split')
+            df = old_data.append(new_df)
+
+            # keep happiness at the end
+            happiness_col = df.pop("Happiness")
+            df["Happiness"] = happiness_col
+            df = df.fillna(" ")
+
+            self.data = df.to_dict(orient='split')
+            print(self.data)
             
         # save profile data
         self.save()

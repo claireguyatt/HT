@@ -1,83 +1,118 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
-    <meta name="viewport">
-    <style></style>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}"/>
+        <title>Settings</title>
     </head>
+    <style>
+        .settings-page-container {
+            margin-left: 25%;
+            margin-right: 25%;
+            width: 50%;
+        }
+        .settings-page-container li {
+            text-align: left;
+            display: list-item;
+            padding-top: 2%;
+        }
+        .settings-page-container ul {
+            list-style-type: circle;
+            margin: 0;
+            padding: 0;
+        }
+        .settings-page-container button, a {
+            font-size: 100%;
+        }
+        form {
+            padding: 2%;
+        }
+       
+    </style>
     <body>
-
-        <h1>Settings</h1>
-        <lu>
-            <li><button onclick="show_div('edit-profile-container')">Edit profile</button></li>
-            <div id="edit-profile-container" style="display:none">
-                <form action="edit_profile/" method="POST">
-                    {% csrf_token %}
-                    <label for="dob">Date of birth:</label>
-                    <input type="date" name="new_dob" id="dob">
-                    <label for="gender">Gender:</label>
-                    <select id="gender" name="new_gender">
-                        <option value="Female">Female</option>
-                        <option value="Male">Male</option>
-                        <option value="Non binary">Non binary</option>
-                        <option value="Other">Other</option>
-                    </select>
-                    <button type="submit">Submit</button>
-                </form>
-            </div>
-            <br>
-            <li><button onclick="show_div('change_username_container')">change username</button></li>
-            <div id="change_username_container" style="display:none">
-                <form action="change_username/" method="POST">
-                    {% csrf_token %}
-                    <p>
-                        <label for="new_username">New username:</label>
-                        <input type="text" name="new_username" maxlength="254" autofocus="" required="" id="new_username">  
-
-                        <span class="helptext">Enter your new username here</span>
-                        <br><br>
-                        <button type="submit">Submit</button>
-                    </p>            
-                </form>
-            </div>
-            <br>
-            <li><button onclick="show_div('change_email_container')">Change Email</button></li>
-            <div id="change_email_container" style="display:none">
-                <form action="change_email/" method="POST">
-                    {% csrf_token %}
-                    <p>
-                        <label for="new_email">New email:</label>
-                        <input type="email" name="new_email" maxlength="254" autofocus="" required="" id="new_email">  
-
-                        <span class="helptext">Enter your new email here</span>
-                        <br><br>
-                        <button type="submit">Submit</button>
-                    </p>            
-                </form>
-            </div>
-            <br>
-            <li><a href="/homepage/password_change">change password</button></li>
-            <br>
-            <li><a href="/homepage/password_reset">forgot password</a></li>
-            <br>
-            <li><button onclick="show_div('delete_account_container')">delete account</button></li>
-            <div id="delete_account_container" style="display:none;">
-                <p>are you sure you want to delete your account?</p>
-                <a href="delete_account/">Yes, delete my account</a>
-                <button onclick="delete_account()">No, I want to know what makes me happy</button>
-            </div>
-        </lu>
-
-        <br> 
-        <a href="/homepage">back to homepage</a>
+        {% include 'includes/header.html' %}
+        <div class="settings-page-container">
+            <h2>Settings</h2>
+            <ul>
+                <li><button onclick="show_div('edit-profile-container'); set_defaults()">Edit Profile</button></li>
+                <div id="edit-profile-container" style="display:none">
+                    <form action="edit_profile/" method="POST">
+                        {% csrf_token %}
+                        <ul>
+                            <li><label for="dob">Date of birth:</label>
+                            <input type="date" name="new_dob" id="dob" defaultValue={{dob}}></li>
+                            <li><label for="gender">Gender:</label>
+                            <select id="gender" name="new_gender">
+                                <option value="Female">Female</option>
+                                <option value="Male">Male</option>
+                                <option value="Non binary">Non binary</option>
+                                <option value="Other">Other</option>
+                            </select></li>
+                        </ul>
+                        <button type="submit" style="padding: none; font-weight: normal;">Submit</button>
+                    </form>
+                </div>
+                <br>
+                <li><button onclick="show_div('change_username_container')">Change Username</button></li>
+                <div id="change_username_container" style="display:none">
+                    <form action="change_username/" method="POST">
+                        {% csrf_token %}
+                        <p>
+                            <li><label for="new_username">New username:</label>
+                            <input type="text" name="new_username" maxlength="254" autofocus="" required="" id="new_username"></li>
+                            <button type="submit" style="padding: 1%; font-weight: normal;">Submit</button>
+                        </p>            
+                    </form>
+                </div>
+                <br>
+                <li><button onclick="show_div('change_email_container')">Change Email</button></li>
+                <div id="change_email_container" style="display:none">
+                    <form action="change_email/" method="POST">
+                        {% csrf_token %}
+                        <p>
+                            <li><label for="new_email">New email:</label>
+                            <input type="email" name="new_email" maxlength="254" autofocus="" required="" id="new_email"></li> 
+                            <button type="submit" style="padding: 1%; font-weight: normal;">Submit</button>
+                        </p>            
+                    </form>
+                </div>
+                <br>
+                <li><a href="/homepage/password_change">&nbsp;Change Password</button></li>
+                <br>
+                <li><a href="/homepage/password_reset">&nbsp;Forgot Password</a></li>
+                <br>
+                <li><button onclick="show_div('delete_account_container')">Delete Account</button></li>
+                <div id="delete_account_container" style="display:none; padding:2%;">
+                    <p>Are you sure you want to delete your account?</p>
+                    <ul style="padding-left: 3%">
+                        <li><button onclick="show_div('delete_account_container')" style="font-weight: normal;">No, I want to know what makes me happy :)</button></li>
+                        <li><a href="delete_account/" style="font-weight: bold"> Yes, delete my account</a></li>
+                    </ul>
+                </div>
+            </ul>
+        </div>
+        <br>
+        <a href="/homepage" style="font-weight: normal;">Go Back</a>
 
         <script>
             function show_div(div) {
+                var other_divs = ["edit-profile-container", "change_username_container", "change_email_container"];
+                for (let other_div of other_divs) {
+                    find_other_div = document.getElementById(other_div);
+                    find_other_div.style.display = "none";
+                }
                 var x = document.getElementById(div);
                 if (x.style.display=="none") {
                     x.style.display = "block";
                 } else {
                     x.style.display = "none";
                 }
+            }
+            function set_defaults() {
+                document.getElementById("dob").defaultValue = "{{ dob | date:'Y-m-d' }}";
+                var select = document.querySelector("#gender");
+                select.value = "{{ gender }}";
             }
         </script>
     </body>
