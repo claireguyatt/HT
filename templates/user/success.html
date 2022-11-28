@@ -1,2 +1,16 @@
-<h1>Success!</h1>
-<a href="/homepage">back to homepage</a>
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}"/>
+        <title>Register</title>
+    </head>
+    <style></style>
+    <body>
+        {% include 'includes/header.html' %}
+        <h2>Success!</h2>
+        <a href="/homepage">Back to Homepage</a>
+    </body>
+</html>

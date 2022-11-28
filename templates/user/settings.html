@@ -32,12 +32,14 @@
     </style>
     <body>
         {% include 'includes/header.html' %}
+        {% include 'includes/messages.html' %}
+        
         <div class="settings-page-container">
             <h2>Settings</h2>
             <ul>
                 <li><button onclick="show_div('edit-profile-container'); set_defaults()">Edit Profile</button></li>
                 <div id="edit-profile-container" style="display:none">
-                    <form action="edit_profile/" method="POST">
+                    <form action="/settings/edit_profile/" method="POST">
                         {% csrf_token %}
                         <ul>
                             <li><label for="dob">Date of birth:</label>
@@ -56,11 +58,11 @@
                 <br>
                 <li><button onclick="show_div('change_username_container')">Change Username</button></li>
                 <div id="change_username_container" style="display:none">
-                    <form action="change_username/" method="POST">
+                    <form action="/settings/change_username/" method="POST">
                         {% csrf_token %}
                         <p>
                             <li><label for="new_username">New username:</label>
-                            <input type="text" name="new_username" maxlength="254" autofocus="" required="" id="new_username"></li>
+                            <input type="text" name="new_username" maxlength="254" autofocus="" required="" id="new_username" style="text-align:left;"></li>
                             <button type="submit" style="padding: 1%; font-weight: normal;">Submit</button>
                         </p>            
                     </form>
@@ -72,7 +74,7 @@
                         {% csrf_token %}
                         <p>
                             <li><label for="new_email">New email:</label>
-                            <input type="email" name="new_email" maxlength="254" autofocus="" required="" id="new_email"></li> 
+                            <input type="email" name="new_email" maxlength="254" autofocus="" required="" id="new_email" style="text-align:left;"></li> 
                             <button type="submit" style="padding: 1%; font-weight: normal;">Submit</button>
                         </p>            
                     </form>

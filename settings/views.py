@@ -10,7 +10,6 @@ from welcome.forms import validate_date
 # Create your views here.
 
 def index(request):
-    print(request.user.profile.dob)
     context = {
         "dob": request.user.profile.dob,
         "gender": request.user.profile.gender
@@ -29,8 +28,13 @@ def change_email(request):
 def change_username(request):
     if request.user.is_authenticated:
         user = User.objects.get(id=request.user.id)
-        user.username = request.POST['new_username']
-        user.save()
+        new_username = request.POST['new_username']
+        try:
+            user.username = new_username
+            user.save()
+        except Exception as e:
+            messages.add_message(request, messages.WARNING, "Username " + new_username + " is taken. Please try again.")
+            return render(request, 'user/settings.html')
         return render(request, 'user/success.html')
     return redirect('/welcome')
 
@@ -44,13 +48,10 @@ def edit_profile(request):
             validate_date(new_date)
             user.profile.dob = new_date
         except Exception as e:
-            print(e)
-            messages.warning(request, e)
-            print(messages)
+            for errors in e:
+                messages.add_message(request, messages.WARNING, errors)
             return render(request, 'user/settings.html')
 
-        user.profile.dob = new_date
-        
         user.profile.gender = request.POST.get("new_gender")
         user.profile.save()
 

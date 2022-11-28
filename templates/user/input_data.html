@@ -1,32 +1,74 @@
-<html>
-    <h1>input data for a new day!</h1>
-    <form action="add_day/" method="POST">
+{% load static %}
+<!DOCTYPE html>
 
-        <label for="date">Date: </label>
-        <input type="date" name="date" required="True" id="date">
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}"/>
+        <title>Home</title>
+    </head>
+    <style>
+        #input-day-form-container {
+            margin-left: 30;
+            margin-right: 30%;
+            width: 40%;
+        }
+        #input-day-form-container li {
+            text-align: left;
+            display: list-item;
+            padding-top: 2%;
+            clear: both;
+        }
+        #input-day-form-container ul {
+            list-style-type: circle;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+        }
+        button {
+            font-size: 100%;
+            margin-top: 10%;
+            font-weight: bold;
+        }
+        form {
+            padding: 2%;
+        }
+    </style>
+    <body>
+        {% include 'includes/header.html' %}
+        {% include 'includes/messages.html' %}
 
-        {% csrf_token %}
-        {% for variable in variables.all %}
 
-            {% if variable.is_continuous %}
-            
-                <label for="{{ variable }}_data">{{ variable.prompt }}</label>
-                <input type="number" name="{{ variable }}" required="" id="{{ variable }}" min="1" max="10"> 
-                <br>
+        <h2>Input New Day</h2>
+        <div id="input-day-form-container">
+            <form action="add_day/" method="POST">
+                {% csrf_token %}
+                <ul>
+                    <li style="display: list-item;"><label for="date">Date: </label>
+                    <input type="date" name="date" required="True" id="date"></li>
 
-            {% else %}
-                <br>
-                {{ variable.prompt }}
-                <select id="{{ variable }}" name="{{ variable }}">
-                    {% for cat_var_choice in variable.find_categorical_choices %}
-                    <option value={{cat_var_choice}}>{{ cat_var_choice }}</option>
-                    {% endfor %}
-                </select>
-            
-            {% endif %}
-        {% endfor %} 
-        <button type="submit" name="submit">Submit</button>
-    </form>
-    <a href="/homepage">back to homepage</a>
+                    {% for variable in variables.all %}
+
+                        {% if variable.is_continuous %}
+                        
+                            <li><label for="{{ variable }}_data">{{ variable.prompt }}</label>
+                            <input type="number" name="{{ variable }}" required="" id="{{ variable }}" min="1" max="10"></li>
+
+                        {% else %}
+
+                            <li><label for="{{ variable }}_data">{{ variable.prompt }}</label>
+                            <select id="{{ variable }}" name="{{ variable }}">
+                                {% for cat_var_choice in variable.find_categorical_choices %}
+                                <option value={{cat_var_choice}}>{{ cat_var_choice }}</option>
+                                {% endfor %}
+                            </select></li>
+                        
+                        {% endif %}
+                    {% endfor %} 
+                </ul>
+                <button type="submit" name="submit">Submit</button>
+            </form>
+        </div>
+    </body>
 </html>    
 

@@ -33,7 +33,7 @@ GENDER_CHOICES = (
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     username = models.CharField(max_length=150)
-    email = models.EmailField(max_length=254, help_text='Required. Enter your email.')
+    email = models.EmailField(max_length=254, help_text='Required. Enter your email.', unique=True)
     number = models.CharField(max_length=11, help_text='Enter your phone number.')
     gender = models.CharField(max_length=20, choices=GENDER_CHOICES, default='Female')
     dob = models.DateField()
