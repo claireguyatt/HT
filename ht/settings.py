@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-uirs(-&c@)3b%0pl0k=r#h#*0skjtldg#rrjs7$a)3b26&$!_6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -149,5 +149,7 @@ SOCIALACCOUNT_PROVIDERS = {
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
