@@ -157,5 +157,5 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE="whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://ht-production.up.railway.app/'
+    'https://ht-production.up.railway.app'
 ]
