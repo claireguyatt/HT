@@ -28,7 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -81,11 +80,11 @@ WSGI_APPLICATION = 'ht.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'HT',
-        'USER': 'htAdmin',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '3306'
+        'NAME': 'railway',
+        'USER': 'root',
+        'PASSWORD': 'B1EKrz804Ek2xf7PN6Jg',
+        'HOST': 'containers-us-west-136.railway.app',
+        'PORT': 6317
     }
 }
 
