@@ -159,3 +159,7 @@ STATICFILES_STORAGE="whitenoise.storage.CompressedManifestStaticFilesStorage"
 CSRF_TRUSTED_ORIGINS = [
     'https://ht-production.up.railway.app'
 ]
+
+CORS_ORIGIN_WHITELIST = [
+    'https://ht-production.up.railway.app',
+]
