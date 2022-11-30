@@ -35,8 +35,11 @@ class NewUserForm(UserCreationForm):
 		cd = self.cleaned_data
 
 		input_username = cd.get("username")
+		input_email = cd.get("email")
 
 		if User.objects.filter(username=input_username).exists():
 			raise forms.ValidationError(f'Username {input_username} is already in use.')
+		if User.objects.filter(email=input_email).exists():
+			raise forms.ValidationError(f'Email {input_email} is already in use.')
 
 		return cd
