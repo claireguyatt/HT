@@ -32,6 +32,7 @@ def register(request):
 
         for field, errors in form.errors.items():
             print(errors)
+            print("test")
             messages.add_message(request, messages.WARNING, errors)
 
         print("Unsuccessful registration. Invalid information.")
