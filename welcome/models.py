@@ -24,8 +24,8 @@ class ProfileManager(models.Manager):
 # Profile model
 
 GENDER_CHOICES = (
-    ("Female", "Female"),
-    ("Male", "Male"),
+    ("Woman", "Woman"),
+    ("Man", "Man"),
     ("Non binary", "Non binary"),
     ("Other", "Other")
 )
@@ -35,7 +35,7 @@ class Profile(models.Model):
     username = models.CharField(max_length=150)
     email = models.EmailField(max_length=254, help_text='Required. Enter your email.', unique=True)
     number = models.CharField(max_length=11, help_text='Enter your phone number.')
-    gender = models.CharField(max_length=20, choices=GENDER_CHOICES, default='Female')
+    gender = models.CharField(max_length=20, choices=GENDER_CHOICES, default='Woman')
     dob = models.DateField()
     variables = models.ManyToManyField(Variable, related_name="users")
     data = models.JSONField(default=dict)

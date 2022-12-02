@@ -1,0 +1,27 @@
+
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}"/>
+        <title>Welcome</title>
+    </head>
+    <style>
+        #text-container {
+            margin-left: 35%;
+            margin-right: 35%;
+            width: 30%;
+        }
+    </style>
+    <body>
+        {% include 'includes/header.html' %}
+        <div id="text-container">
+        <p>Happiness Tracker was made to enable investigation and insight into what makes us happy.
+        Through quick and simple data collection about your own everyday life, and with true statistical measurement
+        of that data, HT will show you what variables impact what kind of day you have. The hope is that users can take that
+        information and use it to more often have litty shmitty days. :)</p>
+        </div>
+    </body>
+</html>

@@ -30,5 +30,6 @@ urlpatterns = [
     path('settings/', include('settings.urls')),
     path('edit_variables/', include('edit_variables.urls')),
     path('input_data/', include('input_data.urls')),
+    path('about/', include('about.urls')),
     path('admin/', admin.site.urls)
 ]
