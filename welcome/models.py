@@ -1,9 +1,13 @@
 from django.db import models
+from django.forms import ValidationError
 
 from django.contrib.auth.models import User
 from edit_variables.models import Variable
 
 import pandas as pd
+from datetime import datetime
+
+from .forms import GENDER_CHOICES, validate_date
 
 # Profile model manager
 
@@ -22,13 +26,6 @@ class ProfileManager(models.Manager):
         return profile
 
 # Profile model
-
-GENDER_CHOICES = (
-    ("Woman", "Woman"),
-    ("Man", "Man"),
-    ("Non binary", "Non binary"),
-    ("Other", "Other")
-)
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -85,9 +82,22 @@ class Profile(models.Model):
             df = df.fillna(" ")
             self.data = df.set_index('date').to_dict(orient='split')
 
-        # otherwise connvert previous data to dataframe & add new data
+        # otherwise convert previous data to dataframe & add new data
         else:
+
             new_df = pd.DataFrame(new_data, index=[0])
+
+            new_date = new_df['date'].values[0]
+
+            print(type(new_date))
+
+            # validate date (can't be in the future, can't already be added)
+
+            validate_date(datetime.strptime(new_date, '%Y-%m-%d').date())
+
+            if (new_date in old_data.index):
+                raise ValidationError(new_date + " has already been added. To re-add, first delete this day's data from the homepage.")
+
             new_df = new_df.set_index('date')
             df = old_data.append(new_df)
 

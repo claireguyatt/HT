@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.forms import ValidationError
 
 # Create your views here.
 
@@ -13,7 +15,15 @@ def index(request):
 
 def add_day(request):
     if request.method == "POST":
-        request.user.profile.add_day(request.POST)
+        try:
+           request.user.profile.add_day(request.POST)
+        except ValidationError as v:
+            as_string = str(v)
+            print(type(as_string))
+            print(as_string)
+
+            messages.add_message(request, messages.WARNING, str(v)[2:-2])
+            return redirect('/input_data')
 
     return redirect('/homepage')
 
