@@ -89,8 +89,6 @@ class Profile(models.Model):
 
             new_date = new_df['date'].values[0]
 
-            print(type(new_date))
-
             # validate date (can't be in the future, can't already be added)
 
             validate_date(datetime.strptime(new_date, '%Y-%m-%d').date())
@@ -110,4 +108,16 @@ class Profile(models.Model):
             print(self.data)
             
         # save profile data
+        self.save()
+    
+    # user delete data
+    def delete_data(self, day: str):
+
+        # delete all data if no specific day
+        if day == "all":
+            self.data = dict()
+        else:
+            data = self.get_data()
+            data = data.drop(day)
+            self.data = data.to_dict(orient='split')
         self.save()
