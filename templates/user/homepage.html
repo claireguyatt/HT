@@ -19,8 +19,13 @@
             padding-right: 8px;
             background-color: #FFFFF0;
         }
-        p {
-            padding: 3%;
+        button {
+            font-size: 100%;
+            padding-top: 2%;
+        }
+        table {
+            border-collapse: collapse; 
+            border: solid 3px #420000 ;
         }
 
     </style>
@@ -29,16 +34,53 @@
 
         {% include 'includes/header.html' %}
 
-        <div id="homepage-container">
+        <div class="homepage-container">
             <h1 style="color:#420000; font-size:180%">Happy Data</h1>
             <div class="data-container">
                 {% if data is None %}
-                    <p>Click Add Day to start tracking your happiness :)</p>
+                    <p style="padding: 2%;">Click Add Day to start tracking your happiness :)</p>
                 {% else %}
                     {{ data|safe }}
                 {% endif %}
             </div>
+            {% if data is not None %}
+                <button type="button" onclick="delete_data()" style="font-weight:bold;">Click to delete some or all data
+                <br>
+                <p>Note that deleting data cannot be undone.</p></button>
+                <div id="delete-days-container" style="display: none; margin: 2%;">
+                    <a href="delete_data/">Delete all data.</a>
+                    <table>
+
+                        {% for day in days %}
+                        <tr>
+                            <td style="font-weight: bold;">{{ day }}</td>
+                            <td>
+                            <form action="delete_data/" method="POST">
+
+                                {% csrf_token %}
+
+                                <button type="submit" name="day" value="{{day}}" style="background-color: #FFFFF0;">Delete</button>
+                            </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                    </table>
+
+                </div>
+            {% endif %}
         </div>
 
     </body>
+
+    <script>
+        function delete_data() {
+            var show_me = document.getElementById("delete-days-container");
+            if (show_me.style.display=="none") {
+                show_me.style.display = "block";
+            } else {
+                show_me.style.display = "none";
+            }
+        }
+    </script>
 </html>
