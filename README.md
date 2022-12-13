@@ -9,4 +9,4 @@ user's happiness. E.g. a user may discover that weather is statistically signifi
 The goal is to give users knowledge that will help them more often have great days!!
 
 ## Tech Stack
-Happiness Tracker is built using Django and data is stored in a MySQL database. Both the web app and the databse are hosted on a railway server.
+Happiness Tracker is built using Django and data is stored in a MySQL database. Both the web app and the database are hosted on a railway server.
