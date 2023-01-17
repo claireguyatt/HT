@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib import messages
 
 from .forms import NewUserForm
@@ -38,3 +38,12 @@ def register(request):
         print("Unsuccessful registration. Invalid information.")
         
     return render(request, 'registration/register.html', {'form': NewUserForm})
+
+def explore(request):
+
+    #profile = Profile.objects.create_guest_profile(user=request.user)
+    #profile.save()
+    logout(request)
+    return redirect('/')
+    #return redirect('/homepage')
+
