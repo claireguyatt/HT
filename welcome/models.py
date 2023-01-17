@@ -13,6 +13,7 @@ from .forms import GENDER_CHOICES, validate_date
 
 class ProfileManager(models.Manager):
         
+    # new user
     def create_profile(self, user, username, email, number, gender, dob):
 
         profile = self.create(user=user, username=username, email=email, number=number, gender=gender, dob=dob)
@@ -24,6 +25,21 @@ class ProfileManager(models.Manager):
             profile.variables.add(v)
         
         return profile
+    
+    # guest user for exploring site
+    def create_guest_profile(self, user):
+        
+        # create profile without extra user info
+        profile = self.create(user=user, username=user.username)
+
+        # add default variables
+        default_vars = ["Sleep", "Temp", "Weather", "Happiness"]
+        for var in default_vars:
+            v = Variable.objects.get(name=var)
+            profile.variables.add(v)
+        
+        return profile
+
 
 # Profile model
 

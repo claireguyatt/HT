@@ -22,7 +22,7 @@ class Variable(models.Model):
         return cat_var.choices.split(",")
     
     def is_cat_non_binary(self):
-        if (CategoricalVariable.objects.filter(name=self.name).exists() and not CategoricalVariable.objects.get(name=self.name).is_binary):
+        if (CategoricalVariable.objects.filter(name=self.name).exists() and not CategoricalVariable.objects.get(pk=self.pk).is_binary):
             return True
         return False
 

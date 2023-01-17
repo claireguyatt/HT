@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib import messages
-from django.contrib.auth.models import UserManager
 
 from .forms import NewUserForm
 from .models import Profile
@@ -40,6 +39,9 @@ def register(request):
 
 def explore(request):
 
-    guest_user = UserManager.create_user(username="guest", email=None, password=None)
-    login(request, guest_user)
-    return redirect ('homepage')
+    #profile = Profile.objects.create_guest_profile(user=request.user)
+    #profile.save()
+    logout(request)
+    return redirect('/')
+    #return redirect('/homepage')
+
