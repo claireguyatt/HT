@@ -19,9 +19,9 @@ class ProfileManager(models.Manager):
         profile = self.create(user=user, username=username, email=email, number=number, gender=gender, dob=dob)
         
         # add default variables
-        default_vars = ["Sleep", "Temp", "Weather", "Happiness"]
-        for var in default_vars:
-            v = Variable.objects.get(name=var)
+        default_vars = [1, 2, 3, 4]
+        for var_key in default_vars:
+            v = Variable.objects.get(pk=var_key)
             profile.variables.add(v)
         
         return profile
