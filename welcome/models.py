@@ -40,7 +40,6 @@ class ProfileManager(models.Manager):
         
         return profile
 
-
 # Profile model
 
 class Profile(models.Model):

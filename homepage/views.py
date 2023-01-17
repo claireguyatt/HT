@@ -42,5 +42,9 @@ def input_data(request):
     return redirect('/input_data')
 
 def logout_user(request):
+
+    # TO-DO if guest user, revert back to original (unsave all changes)
+
+
     logout(request)
     return redirect('/')

@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout
+from django.contrib.auth import login
 from django.contrib import messages
 
 from .forms import NewUserForm
-from .models import Profile
+from .models import Profile, User
 
 def index(request):
     return render(request, 'welcome.html')
@@ -39,11 +39,11 @@ def register(request):
         
     return render(request, 'registration/register.html', {'form': NewUserForm})
 
+# signs in with guest account, deletes changes on logout
+# to fix in future: could be problematic if more than one guest at once
 def explore(request):
 
-    #profile = Profile.objects.create_guest_profile(user=request.user)
-    #profile.save()
-    logout(request)
-    return redirect('/')
-    #return redirect('/homepage')
+    user = User.objects.get(username="Guest")
+    login(request, user)
+    return redirect('/homepage')
 
