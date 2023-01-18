@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'welcome.apps.WelcomeConfig',
     'edit_variables.apps.EditVariablesConfig',
-    'whitenoise.runserver_nostatic', 
 ]
 
 MIDDLEWARE = [
