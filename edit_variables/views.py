@@ -57,13 +57,11 @@ def add_variable(request):
 
                 if var_type == "binary":
                     new_variable = CategoricalVariable.objects.create(name=var_name, prompt=var_prompt, is_continuous=False, choices="Y,N")
-                    print("heyyy")
                 elif var_type == "categorical":
                     var_choices = request.POST.get("choice")
                     print(var_choices)
                     new_variable = CategoricalVariable.objects.create(name=var_name, prompt=var_prompt, is_continuous=False, choices=var_choices, is_binary=False)
-                    print("hello")
-                else:
+                elif var_type == "continuous":
                     new_variable = Variable.objects.create(name=var_name, prompt=var_prompt, is_continuous=True)
                 request.user.profile.variables.add(new_variable)
             

@@ -110,7 +110,12 @@
                         clear: both;">
                             {% csrf_token %}
                             {{ var_form }}
-                            
+                            <div id="continuous-variable-container">
+                                <label for="lower-bound" style="float:left;">Lower bound: </label>
+                                <input type="number" name="lower-bound">
+                                <label for="upper-bound" style="float:left;">Upper bound: </label>
+                                <input type="number" name="upper-bound">
+                            </div>
                             <div id="categorical-variable-container" style="display: none;">
                                     <ul id="categories-list">
                                         <li id="category-input"><label for="choice" style="float:left;">Variable response option: </label>
@@ -157,16 +162,19 @@
             hidden_type.setAttribute("type", "hidden");
             hidden_type.setAttribute("name", "type");
             var cat_var = document.getElementById("categorical-variable-container");
+            var con_var = document.getElementById("continuous-variable-container");
             if (element.value == "categorical") {
+                con_var.style.display = "none";
                 cat_var.style.display = "block";
                 hidden_type.setAttribute("value", "categorical");
+            } else if (element.value == "continuous") {
+                cat_var.style.display = "none";
+                con_var.style.display = "block";
+                hidden_type.setAttribute("value", "continuous");
             } else {
                 cat_var.style.display = "none";
-                if (element.value=="binary") {
-                    hidden_type.setAttribute("value", "binary");
-                } else if (element.value=="continuous") {
-                    hidden_type.setAttribute("value", "continuous");
-                }
+                con_var.style.display = "none";
+                hidden_type.setAttribute("value", "binary");
             }
             var add_type = document.getElementById("new-variable-form");
             add_type.appendChild(hidden_type);
