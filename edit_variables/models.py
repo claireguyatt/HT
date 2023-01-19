@@ -18,17 +18,17 @@ class Variable(models.Model):
         return 'model-detail-view', [str(self.id)]
 
     def find_categorical_choices(self):
-        cat_var = CategoricalVariable.objects.get(name=self.name)
+        cat_var = CategoricalVariable.objects.get(pk=self.pk)
         return cat_var.choices.split(",")
     
     def is_cat_non_binary(self):
-        if (CategoricalVariable.objects.filter(name=self.name).exists() and not CategoricalVariable.objects.get(pk=self.pk).is_binary):
+        if (CategoricalVariable.objects.filter(pk=self.pk).exists() and not CategoricalVariable.objects.get(pk=self.pk).is_binary):
             return True
         return False
 
     def get_choices(self):
         if self.is_cat_non_binary:
-            return CategoricalVariable.objects.get(name=self.name).choices
+            return CategoricalVariable.objects.get(pk=self.pk).choices
         return None
     
     def check_delete(self):
