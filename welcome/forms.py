@@ -15,7 +15,7 @@ GENDER_CHOICES = (
 
 def validate_date(input_date):
 	if input_date > datetime.date.today():
-		raise forms.ValidationError("DOB cannot be in the future. Unless you are a time traveller. Then you're probably smart enough to figure out how to bypass this validator.")
+		raise forms.ValidationError("Date cannot be in the future. Unless you are a time traveller. Then you're probably smart enough to figure out how to bypass this validator.")
 
 class NewUserForm(UserCreationForm):
 
