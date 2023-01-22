@@ -1,0 +1,86 @@
+
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}"/>
+        <title>FAQ</title>
+    </head>
+
+
+<style>
+    .faq-page-container {
+        margin-left: 25%;
+        margin-right: 25%;
+        width: 50%;
+    }
+    .faq-page-container li {
+        text-align: left;
+        display: list-item;
+        padding-top: 2%;
+    }
+    .faq-page-container ul {
+        list-style-type: circle;
+        margin: 0;
+        padding: 0;
+    }
+    .faq-page-container button, a, p {
+        font-size: 100%;
+    }
+    .faq-page-container p {
+        text-align: left;
+        margin: 6%;
+    }
+    form {
+        padding: 2%;
+    }
+   
+</style>
+<body>
+    {% include 'includes/header.html' %}
+    
+    <div class="faq-page-container">
+        <h2>Frequestly Asked Questions</h2>
+        <ul>
+            <li><button class="question" onclick="show_div('about-container')">What is Happiness Tracker?</button>
+            <div id="about-container" style="display:none">
+                <p>Happiness Tracker is a web app made that enables investigation and insight into what makes us happy.
+                    Through quick and simple data collection about your own everyday life, and with true statistical measurement
+                    of that data, HT will show you what variables impact what kind of day you have. The hope is that users can take that
+                    information and use it to more often have litty shmitty days. :)
+                </p>
+            </div>
+            </li>
+            <li><button class="question" onclick="show_div('use-container')">How do I best make use of Happiness Tracker?</button>
+                <div id="use-container" style="display:none">
+                    <p>
+                    </p>
+                </div>
+            </li>
+            <li><button class="question" onclick="show_div('analysis-container')">How is my data analyzed?</button>
+                <div id="analysis-container" style="display:none">
+                    <p>
+                    </p>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <br>
+    <a href="/homepage" style="font-weight: normal;">Go Back</a>
+
+    <script>
+        function show_div(div) {
+
+            var answer = document.getElementById(div);
+            console.log(answer);
+            if (answer.style.display === "block") {
+            answer.style.display = "none";
+            } else {
+            answer.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>
