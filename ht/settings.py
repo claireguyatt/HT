@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'welcome.apps.WelcomeConfig',
     'edit_variables.apps.EditVariablesConfig',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -157,5 +158,13 @@ STATICFILES_DIRS = [
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
+
+# added
+# makes indiv pages for long list of instances
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5
+}
 
 
