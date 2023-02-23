@@ -1,12 +1,17 @@
 from rest_framework import serializers
 from .models import Profile
-from edit_variables.models import Variable
+from django.contrib.auth.models import User
 
-from .forms import GENDER_CHOICES, validate_date
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ['id', 'username']
 
 class ProfileSerializer(serializers.ModelSerializer):
 
     # use print(repr(serializer)) in shell to see how it's serialized
+    user = serializers.ReadOnlyField(source='user.id')
     
     class Meta:
         model = Profile
