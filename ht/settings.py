@@ -79,6 +79,7 @@ WSGI_APPLICATION = 'ht.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+<<<<<<< HEAD
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -89,6 +90,9 @@ DATABASES = {
         'PORT': '3306'
     }
 }
+=======
+DATABASES = constants.DATABASE
+>>>>>>> ffc577136686012881f8fee3823e2d0ff4a65d17
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
