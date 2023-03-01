@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'ht.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'HT',
+        'NAME': 'railway',
         'USER': 'root',
         'PASSWORD': 'lzNip2fw2SbwwFqMfAAY',
         'HOST': 'containers-us-west-136.railway.app',
