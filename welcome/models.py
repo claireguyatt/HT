@@ -102,7 +102,6 @@ class Profile(models.Model):
         else:
 
             new_df = pd.DataFrame(new_data, index=[0])
-
             new_date = new_df['date'].values[0]
 
             # validate date (can't be in the future, can't already be added)
@@ -137,3 +136,8 @@ class Profile(models.Model):
             data = data.drop(day)
             self.data = data.to_dict(orient='split')
         self.save()
+
+    def download_data(self) -> None:
+
+        data = self.get_data()
+        data.to_csv('file_name.csv')

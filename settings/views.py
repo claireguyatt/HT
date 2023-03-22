@@ -72,4 +72,10 @@ def delete_account(request):
 
         return redirect('/')
 
+def download_data(request):
+    if request.user.is_authenticated:
+
+        user = User.objects.get(id=request.user.id)
+        download_data(user.profile)
+
 
