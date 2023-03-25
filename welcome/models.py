@@ -140,4 +140,5 @@ class Profile(models.Model):
     def download_data(self) -> None:
 
         data = self.get_data()
-        data.to_csv('file_name.csv')
+        date_time_str = datetime.today().strftime("%Y-%m-%d")
+        data.to_csv('happiness_data' + date_time_str + '.csv')

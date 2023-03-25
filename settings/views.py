@@ -3,7 +3,7 @@ from django.contrib import messages
 
 from datetime import datetime
 
-from welcome.models import User
+from welcome.models import User, Profile
 from edit_variables.models import Variable
 from welcome.forms import validate_date
 
@@ -76,6 +76,8 @@ def download_data(request):
     if request.user.is_authenticated:
 
         user = User.objects.get(id=request.user.id)
-        download_data(user.profile)
+        Profile.download_data(user.profile)
 
+        return render(request, 'user/success.html')
+    return redirect('/welcome')
 
