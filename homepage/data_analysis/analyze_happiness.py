@@ -21,6 +21,3 @@ class Happiness_Analyzer:
         # create & fit model
         regr = linear_model.LinearRegression(normalize=True)
         regr.fit(X, y)
-        
-
-
