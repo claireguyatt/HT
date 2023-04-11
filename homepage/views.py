@@ -1,7 +1,9 @@
+# django imports
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 
-# Create your views here.
+# program imports
+from .data_analysis.analyze_happiness import Happiness_Analyzer
 
 def index(request):
     if request.user.is_authenticated:
@@ -45,6 +47,13 @@ def logout_user(request):
 
     # TO-DO if guest user, revert back to original (unsave all changes)
 
-
     logout(request)
     return redirect('/')
+
+def analyze(request):
+    if request.user.is_authenticated:
+        analyzer = Happiness_Analyzer(request.user.profile.get_data())
+        print(analyzer.data)
+        analyzer.linear_reg()
+    return redirect('/homepage')
+

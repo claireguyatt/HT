@@ -14,10 +14,13 @@ class Happiness_Analyzer:
     def linear_reg(self):
 
         # all variables are IDs except happiness
-        X = self.data.drop(['happiness'], axis=1)
+        X = self.data.drop(['Happiness'], axis=1)
         # happiness is DV
-        y = self.data['happiness']
+        y = self.data['Happiness']
 
         # create & fit model
-        regr = linear_model.LinearRegression(normalize=True)
+        # ***need to add normalizer
+        # ***need to make categorical data numerical
+        regr = linear_model.LinearRegression()
         regr.fit(X, y)
+        print(regr)
