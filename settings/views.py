@@ -81,7 +81,7 @@ def download_data(request):
 
         user = User.objects.get(id=request.user.id)
         Profile.download_data(user.profile)
-
         return render(request, 'user/success.html')
+        
     return redirect('/welcome')
 

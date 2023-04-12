@@ -54,6 +54,7 @@ def analyze(request):
     if request.user.is_authenticated:
         analyzer = Happiness_Analyzer(request.user.profile.get_data())
         print(analyzer.data)
+        analyzer.preprocess()
         analyzer.linear_reg()
     return redirect('/homepage')
 
