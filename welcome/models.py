@@ -40,6 +40,7 @@ class ProfileManager(models.Manager):
         
         return profile
 
+
 # Profile model
 
 class Profile(models.Model):
@@ -101,7 +102,6 @@ class Profile(models.Model):
         else:
 
             new_df = pd.DataFrame(new_data, index=[0])
-
             new_date = new_df['date'].values[0]
 
             # validate date (can't be in the future, can't already be added)
@@ -136,3 +136,9 @@ class Profile(models.Model):
             data = data.drop(day)
             self.data = data.to_dict(orient='split')
         self.save()
+
+    def download_data(self) -> None:
+
+        data = self.get_data()
+        date_time_str = datetime.today().strftime("%Y-%m-%d")
+        data.to_csv('happiness_data' + date_time_str + '.csv')
