@@ -1,11 +1,15 @@
+# django imports
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
+# library imports
 from datetime import datetime
 
-from welcome.models import User
+# project imports
+from welcome.models import User, Profile
 from edit_variables.models import Variable
 from welcome.forms import validate_date
+from homepage.data_analysis.analyze_happiness import Happiness_Analyzer
 
 # Create your views here.
 
@@ -72,4 +76,12 @@ def delete_account(request):
 
         return redirect('/')
 
+def download_data(request):
+    if request.user.is_authenticated:
+
+        user = User.objects.get(id=request.user.id)
+        Profile.download_data(user.profile)
+        return render(request, 'user/success.html')
+        
+    return redirect('/welcome')
 
