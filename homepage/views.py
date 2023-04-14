@@ -55,6 +55,8 @@ def analyze(request):
         analyzer = Happiness_Analyzer(request.user.profile.get_data())
         print(analyzer.data)
         analyzer.preprocess()
-        analyzer.linear_reg()
-    return redirect('/homepage')
+        context = {
+            "analysis":analyzer.linera_reg()
+        }
+    return redirect('/homepage', context)
 
