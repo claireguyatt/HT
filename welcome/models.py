@@ -1,13 +1,16 @@
+# django imports
 from django.db import models
 from django.forms import ValidationError
-
 from django.contrib.auth.models import User
-from edit_variables.models import Variable
 
+# libary imports
 import pandas as pd
 from datetime import datetime
 
+# project imports
+from edit_variables.models import Variable
 from .forms import GENDER_CHOICES, validate_date
+from homepage.data_analysis.analyze_happiness import Happiness_Analyzer
 
 # Profile model manager
 
@@ -52,6 +55,7 @@ class Profile(models.Model):
     dob = models.DateField()
     variables = models.ManyToManyField(Variable, related_name="users")
     data = models.JSONField(default=dict)
+    analysis = models.TextField()
 
     objects = ProfileManager()
 
@@ -135,6 +139,7 @@ class Profile(models.Model):
             data = self.get_data()
             data = data.drop(day)
             self.data = data.to_dict(orient='split')
+            self.analyze(self.data)
         self.save()
 
     def download_data(self) -> None:
@@ -142,3 +147,12 @@ class Profile(models.Model):
         data = self.get_data()
         date_time_str = datetime.today().strftime("%Y-%m-%d")
         data.to_csv('happiness_data' + date_time_str + '.csv')
+
+    def analyze(self, data):
+            
+        analyzer = Happiness_Analyzer(data)
+        print(analyzer.data)
+        analyzer.preprocess()
+        analysis = analyzer.linear_reg()
+        self.analysis = analysis
+        self.save()

@@ -69,8 +69,14 @@
 
                 </div>
             {% endif %}
+            <br>
+            <br>
             <div id="data_analysis_container">
-                <a href="analyze/">Analyze data</a>
+                {% if analysis is None %}
+                    <p>hello</p>
+                {% else %}
+                    {{ analysis|safe }}
+                {% endif %}
             </div>
         </div>
 
