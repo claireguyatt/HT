@@ -116,7 +116,9 @@ class Profile(models.Model):
                 raise ValidationError(new_date + " has already been added. To re-add, first delete this day's data from the homepage.")
 
             new_df = new_df.set_index('date')
-            df = old_data.append(new_df)
+            df = pd.concat([old_data, new_df], ignore_index=True)
+            #df = old_data.concat(new_df)
+            #df = old_data.append(new_df)
 
             # keep happiness at the end
             happiness_col = df.pop("Happiness")
@@ -126,7 +128,8 @@ class Profile(models.Model):
             self.data = df.to_dict(orient='split')
             print(self.data)
             
-        # save profile data
+        # update analysis and save
+        self.analyze()
         self.save()
     
     # user delete data
@@ -139,7 +142,8 @@ class Profile(models.Model):
             data = self.get_data()
             data = data.drop(day)
             self.data = data.to_dict(orient='split')
-            self.analyze(self.data)
+        
+        self.analyze()
         self.save()
 
     def download_data(self) -> None:
@@ -148,9 +152,9 @@ class Profile(models.Model):
         date_time_str = datetime.today().strftime("%Y-%m-%d")
         data.to_csv('happiness_data' + date_time_str + '.csv')
 
-    def analyze(self, data):
+    def analyze(self):
             
-        analyzer = Happiness_Analyzer(data)
+        analyzer = Happiness_Analyzer(self.get_data())
         print(analyzer.data)
         analyzer.preprocess()
         analysis = analyzer.linear_reg()

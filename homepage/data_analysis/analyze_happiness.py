@@ -6,6 +6,7 @@ import numpy as np
 from sklearn import linear_model
 from sklearn.preprocessing import OrdinalEncoder
 from matplotlib.figure import Figure
+from matplotlib import pyplot as plt  
 from sklearn.metrics import mean_squared_error, r2_score
 
 class Happiness_Analyzer: 
@@ -29,14 +30,13 @@ class Happiness_Analyzer:
 
         # Split the data into training/testing sets
         X_train = self.X[:-10]
+        print("xtrain: ", X_train)
         X_test = self.X[-10:]
 
         # Split the targets into training/testing sets
         y_train = self.y[:-10]
+        print("ytrain: ", y_train)
         y_test = self.y[-10:]
-
-        print(len(y_test))
-        print(len(X_test))
 
         # Create linear regression object
         regr = linear_model.LinearRegression()
@@ -58,12 +58,16 @@ class Happiness_Analyzer:
         fig = Figure()
         ax = fig.subplots()
         ax.plot([1, 2])
+        ax.set_xlabel('Display X-axis Label', 
+               fontweight ='bold')
+
         # Save it to a temporary buffer.
         buf = BytesIO()
         fig.savefig(buf, format="png")
         # Embed the result in the html output.
-        data = base64.b64encode(buf.getbuffer()).decode("ascii")
-        return f"<img src='data:image/png;base64,{data}'/>"
+        analysis = base64.b64encode(buf.getbuffer()).decode("ascii")
+        # return analysis
+        return f"<img src='data:image/png;base64,{analysis}'/>"
 
 
         # create & fit model
