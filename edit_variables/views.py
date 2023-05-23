@@ -62,9 +62,8 @@ def add_variable(request):
                     new_variable = CategoricalVariable.objects.create(name=var_name, prompt=var_prompt, is_continuous=False, choices=var_choices, is_binary=False)
                 elif var_type == "continuous":
                     start = request.POST.get("start")
-                    print(start)
                     end = request.POST.get("end")
-                    new_variable = ContinuousVariable.objects.create(name=var_name, prompt=var_prompt, is_continuous=True, scale_start=start, scale_end=end)
+                    new_variable = ContinuousVariable.objects.create(name=var_name, prompt=var_prompt, is_continuous=True, lower_bound=start, upper_bound=end)
                 else:
                     messages.warning(request, "Please select a variable type.")
                     return redirect('/edit_variables')
