@@ -71,10 +71,8 @@
             {% endif %}
             <br>
             <br>
-            <div id="data_analysis_container">
-                {% if analysis is None %}
-                    <p>hello</p>
-                {% else %}
+            <div id="data_analysis_container" style="display: none">
+                {% if analysis is not None %}
                     {{ analysis|safe }}
                 {% endif %}
             </div>
