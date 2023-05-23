@@ -1,21 +1,26 @@
+# django imports
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 
-# Create your views here.
+# program imports
+from .data_analysis.analyze_happiness import Happiness_Analyzer
 
 def index(request):
     if request.user.is_authenticated:
         if request.user.profile.get_data().empty:
             data = None
             days = None
+            analysis = None
         else:
             all_data = request.user.profile.get_data()
             days = all_data.index
             data = all_data.to_html()
+            analysis = request.user.profile.analysis
 
         context = {
             "data": data,
-            "days": days
+            "days": days,
+            "analysis": analysis
         }
         return render(request, 'user/homepage.html', context)
     else:
@@ -47,3 +52,11 @@ def logout_user(request):
 
     logout(request)
     return redirect('/')
+
+def analyze(request):
+    if request.user.is_authenticated:
+        
+        pass
+
+    return redirect('/homepage')
+

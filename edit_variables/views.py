@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.contrib import messages
 from .forms import VariableForm
-from .models import Variable, CategoricalVariable
+from .models import Variable, CategoricalVariable, ContinuousVariable
 from django.utils.translation import gettext_lazy as _
 
 # Create your views here.
@@ -59,10 +59,16 @@ def add_variable(request):
                     new_variable = CategoricalVariable.objects.create(name=var_name, prompt=var_prompt, is_continuous=False, choices="Y,N")
                 elif var_type == "categorical":
                     var_choices = request.POST.get("choice")
-                    print(var_choices)
                     new_variable = CategoricalVariable.objects.create(name=var_name, prompt=var_prompt, is_continuous=False, choices=var_choices, is_binary=False)
                 elif var_type == "continuous":
-                    new_variable = Variable.objects.create(name=var_name, prompt=var_prompt, is_continuous=True)
+                    start = request.POST.get("start")
+                    print(start)
+                    end = request.POST.get("end")
+                    new_variable = ContinuousVariable.objects.create(name=var_name, prompt=var_prompt, is_continuous=True, scale_start=start, scale_end=end)
+                else:
+                    messages.warning(request, "Please select a variable type.")
+                    return redirect('/edit_variables')
+
                 request.user.profile.variables.add(new_variable)
             
             else:

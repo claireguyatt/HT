@@ -8,7 +8,8 @@ def index(request):
 
     context = {
         "variables": request.user.profile.variables.all(),
-        "cat_variables": request.user.profile.get_categorical()
+        "cat_variables": request.user.profile.get_categorical(),
+        "con_variables": request.user.profile.get_continuous()
     }
 
     return render(request, 'user/input_data.html', context)

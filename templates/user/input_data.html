@@ -31,13 +31,12 @@
             font-weight: bold;
         }
         form {
-            padding: 2%;
+            padding: 1%;
         }
     </style>
     <body>
         {% include 'includes/header.html' %}
         {% include 'includes/messages.html' %}
-
 
         <h2>Input New Day</h2>
         <div id="input-day-form-container">
@@ -52,7 +51,7 @@
                         {% if variable.is_continuous %}
                         
                             <li><label for="{{ variable }}_data">{{ variable.prompt }}</label>
-                            <input type="number" name="{{ variable }}" required="" id="{{ variable }}" min="1" max="10"></li>
+                            <input type="number" name="{{ variable }}" required="" id="{{ variable }}" min="{{ variable.get_lower }}" max="{{ variable.get_upper }}"></li>
 
                         {% else %}
 
