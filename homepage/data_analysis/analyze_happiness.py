@@ -16,6 +16,9 @@ class Happiness_Analyzer:
         self.data = data
         self.X = self.data.drop(['Happiness'], axis=1)
         self.y = self.data['Happiness']
+        self.preprocess()
+        #self.lin_reg = 
+        #self.plot = self.plot()
 
     def preprocess(self):
         # deal with missing vals
@@ -30,12 +33,12 @@ class Happiness_Analyzer:
 
         # Split the data into training/testing sets
         X_train = self.X[:-10]
-        print("xtrain: ", X_train)
+        #print("xtrain: ", X_train)
         X_test = self.X[-10:]
 
         # Split the targets into training/testing sets
         y_train = self.y[:-10]
-        print("ytrain: ", y_train)
+        #print("ytrain: ", y_train)
         y_test = self.y[-10:]
 
         # Create linear regression object
@@ -54,10 +57,13 @@ class Happiness_Analyzer:
         # The coefficient of determination: 1 is perfect prediction
         print("Coefficient of determination: %.2f" % r2_score(y_test, y_pred))
 
-        # Generate the figure **without using pyplot**.
+        # Generate the figure **without using pyplot**
         fig = Figure()
         ax = fig.subplots()
-        ax.plot([1, 2])
+        sleep_data = self.data['Sleep'].values.tolist()
+        hap_data = self.data['Happiness'].values.tolist()
+        print(type(self.data['Sleep'].values.tolist()))
+        ax.plot(sleep_data, hap_data)
         ax.set_xlabel('Display X-axis Label', 
                fontweight ='bold')
 
@@ -69,6 +75,9 @@ class Happiness_Analyzer:
         # return analysis
         return f"<img src='data:image/png;base64,{analysis}'/>"
 
+    def plot(self):
+
+        pass
 
         # create & fit model
         # ***need to add normalizer

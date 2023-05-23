@@ -69,6 +69,9 @@ class Profile(models.Model):
     
     def get_categorical(self):
         return self.variables.all().filter(is_continuous=False)
+    
+    def get_continuous(self):
+        return self.variables.all().filter(is_continuous=True)
 
     # return user data in pd
     def get_data(self):
@@ -126,7 +129,6 @@ class Profile(models.Model):
             df = df.fillna(" ")
 
             self.data = df.to_dict(orient='split')
-            print(self.data)
             
         # update analysis and save
         self.analyze()
@@ -155,7 +157,6 @@ class Profile(models.Model):
     def analyze(self):
             
         analyzer = Happiness_Analyzer(self.get_data())
-        print(analyzer.data)
         analyzer.preprocess()
         analysis = analyzer.linear_reg()
         self.analysis = analysis

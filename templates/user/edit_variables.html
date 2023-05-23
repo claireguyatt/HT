@@ -48,8 +48,8 @@
     </style>
     <body>
 
-    {% include 'includes/messages.html' %}
     {% include 'includes/header.html' %}
+    {% include 'includes/messages.html' %}
 
     <div class="edit-variables-page-container">
 
@@ -97,6 +97,7 @@
                 <div id="new-variable-input-container" style="display:none">
                     <label for="type">Variable type:</label>
                     <select id="type" name="type" onChange="check_var_type(this)">
+                        <option value="" disabled selected hidden>Pick a variable type</option>
                         <option value="continuous">Continuous</option>
                         <option value="binary">Binary</option>
                         <option value="categorical">Categorical</option>
@@ -110,11 +111,11 @@
                         clear: both;">
                             {% csrf_token %}
                             {{ var_form }}
-                            <div id="continuous-variable-container">
-                                <label for="lower-bound" style="float:left;">Lower bound: </label>
-                                <input type="number" name="lower-bound">
-                                <label for="upper-bound" style="float:left;">Upper bound: </label>
-                                <input type="number" name="upper-bound">
+                            <div id="continuous-variable-container" style="display: none;">
+                                <label for="start" style="float:left;">Lower bound: </label>
+                                <input type="number" name="start">
+                                <label for="end" style="float:left;">Upper bound: </label>
+                                <input type="number" name="end">
                             </div>
                             <div id="categorical-variable-container" style="display: none;">
                                     <ul id="categories-list">
@@ -156,6 +157,8 @@
         }
         
         function check_var_type(element) {
+            console.log("testing in html code - element type: ");
+            console.log(element.value);
             var new_var = document.getElementById("new_variable_form_container");
             new_var.style.display = "block";
             var hidden_type = document.createElement("input");

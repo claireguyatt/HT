@@ -27,8 +27,18 @@ class Variable(models.Model):
         return False
 
     def get_choices(self):
-        if self.is_cat_non_binary:
+        if self.is_cat_non_binary():
             return CategoricalVariable.objects.get(pk=self.pk).choices
+        return None
+
+    def get_upper(self):
+        if not self.is_cat_non_binary():
+            return ContinuousVariable.objects.get(pk=self.pk).upper_bound
+        return None
+        
+    def get_lower(self):
+        if not self.is_cat_non_binary():
+            return ContinuousVariable.objects.get(pk=self.pk).lower_bound
         return None
     
     def check_delete(self):
@@ -45,11 +55,15 @@ class Variable(models.Model):
             if not var.users.all():
                 Variable.objects.get(id=self.id).delete()
 
-# Variable model subclass
+# Variable model subclasses
 
 class CategoricalVariable(Variable):
     
     # if binary, choices are automatically Y/N
     is_binary = models.BooleanField(default=True)
     choices = models.CharField(max_length=500)
+
+class ContinuousVariable(Variable):
+    upper_bound = models.IntegerField(default=0, help_text="Start of scale")
+    lower_bound = models.IntegerField(default=10, help_text="End of scale")
 
