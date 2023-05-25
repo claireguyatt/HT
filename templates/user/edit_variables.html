@@ -72,7 +72,7 @@
 
                     <td><button name="edit-choices" onClick="edit_choices()">Edit variable choices</button></td>
                     <div id="edit-choices-container" style="display: none">
-                        <p>Old choices: </p>
+                        <p>Old choices:</p>
                         <span>{{ variable.get_choices }}</span> 
                         <form action="edit_choices/" method="POST">
                             {% csrf_token %}

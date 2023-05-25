@@ -9,7 +9,6 @@ from datetime import datetime
 from welcome.models import User, Profile
 from edit_variables.models import Variable
 from welcome.forms import validate_date
-from homepage.data_analysis.analyze_happiness import Happiness_Analyzer
 
 # Create your views here.
 

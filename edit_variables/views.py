@@ -1,11 +1,12 @@
+# django imports
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.contrib import messages
-from .forms import VariableForm
-from .models import Variable, CategoricalVariable, ContinuousVariable
 from django.utils.translation import gettext_lazy as _
 
-# Create your views here.
+# program imports
+from .forms import VariableForm
+from .models import Variable, CategoricalVariable, ContinuousVariable
 
 def index(request):
 
@@ -63,6 +64,13 @@ def add_variable(request):
                 elif var_type == "continuous":
                     start = request.POST.get("start")
                     end = request.POST.get("end")
+<<<<<<< HEAD
+=======
+                    if start >= end:
+                        # validation for continuous variable
+                        messages.warning(request, "Lower bound must be lower than upper bound for continuous variables. Please try again to create a new variable.")
+                        return redirect('/edit_variables')
+>>>>>>> main
                     new_variable = ContinuousVariable.objects.create(name=var_name, prompt=var_prompt, is_continuous=True, lower_bound=start, upper_bound=end)
                 else:
                     messages.warning(request, "Please select a variable type.")
