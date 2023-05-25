@@ -12,6 +12,11 @@ from edit_variables.models import Variable
 from .forms import GENDER_CHOICES, validate_date
 from homepage.data_analysis.analyze_happiness import Happiness_Analyzer
 
+# date validation for multiple delete
+def validate_dates(start_date, end_date):
+    if start_date >= end_date:
+        raise ValidationError("Start date must preceed end date.")
+
 # Profile model manager
 
 class ProfileManager(models.Manager):
@@ -119,34 +124,47 @@ class Profile(models.Model):
                 raise ValidationError(new_date + " has already been added. To re-add, first delete this day's data from the homepage.")
 
             new_df = new_df.set_index('date')
-            df = pd.concat([old_data, new_df], ignore_index=True)
+            df = pd.concat([old_data, new_df])
             #df = old_data.concat(new_df)
             #df = old_data.append(new_df)
+
+            # make sure data is sorted by date (incase old date was input)
+            df = df.sort_index()
 
             # keep happiness at the end
             happiness_col = df.pop("Happiness")
             df["Happiness"] = happiness_col
             df = df.fillna(" ")
-
             self.data = df.to_dict(orient='split')
             
         # update analysis and save
-        self.analyze()
         self.save()
+        #if df.shape[0] > 1:
+            #self.analyze()
+        
     
     # user delete data
-    def delete_data(self, day: str):
+    def delete_data(self, date: str):
 
         # delete all data if no specific day
-        if day == "all":
+        if date == "all":
             self.data = dict()
         else:
             data = self.get_data()
-            data = data.drop(day)
+            data = data.drop(date)
             self.data = data.to_dict(orient='split')
-        
-        self.analyze()
         self.save()
+
+        #if self.data:
+            #self.analyze()
+
+    def delete_data_from_range(self, start_date, end_date):
+        data = self.get_data()
+        data = data.loc[(data.index < start_date) | (data.index > end_date)]
+        self.data = data.to_dict(orient='split')
+
+        self.save()
+        # self.analyze()
 
     def download_data(self) -> None:
 
@@ -154,7 +172,7 @@ class Profile(models.Model):
         date_time_str = datetime.today().strftime("%Y-%m-%d")
         data.to_csv('happiness_data' + date_time_str + '.csv')
 
-    def analyze(self):
+    def analyze(self) -> None:
             
         analyzer = Happiness_Analyzer(self.get_data())
         analyzer.preprocess()

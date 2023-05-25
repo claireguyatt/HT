@@ -1,3 +1,4 @@
+# django imports
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -17,27 +18,28 @@ class Variable(models.Model):
     def get_absolute_url(self):
         return 'model-detail-view', [str(self.id)]
 
+    # get categorical choices as a comma separated string
     def find_categorical_choices(self):
         cat_var = CategoricalVariable.objects.get(pk=self.pk)
         return cat_var.choices.split(",")
+    # get categorical choices
+    def get_choices(self):
+        if self.is_cat_non_binary():
+            return CategoricalVariable.objects.get(pk=self.pk).choices
+        return None
     
     def is_cat_non_binary(self):
         if (CategoricalVariable.objects.filter(pk=self.pk).exists() and not CategoricalVariable.objects.get(pk=self.pk).is_binary):
             return True
         return False
 
-    def get_choices(self):
-        if self.is_cat_non_binary():
-            return CategoricalVariable.objects.get(pk=self.pk).choices
-        return None
-
     def get_upper(self):
-        if not self.is_cat_non_binary():
+        if self.is_continuous:
             return ContinuousVariable.objects.get(pk=self.pk).upper_bound
         return None
         
     def get_lower(self):
-        if not self.is_cat_non_binary():
+        if self.is_continuous:
             return ContinuousVariable.objects.get(pk=self.pk).lower_bound
         return None
     
@@ -64,6 +66,6 @@ class CategoricalVariable(Variable):
     choices = models.CharField(max_length=500)
 
 class ContinuousVariable(Variable):
-    upper_bound = models.IntegerField(default=0, help_text="Start of scale")
-    lower_bound = models.IntegerField(default=10, help_text="End of scale")
+    lower_bound = models.IntegerField(default=0, help_text="Start of scale")
+    upper_bound = models.IntegerField(default=10, help_text="End of scale")
 

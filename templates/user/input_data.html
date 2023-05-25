@@ -51,23 +51,40 @@
                         {% if variable.is_continuous %}
                         
                             <li><label for="{{ variable }}_data">{{ variable.prompt }}</label>
-                            <input type="number" name="{{ variable }}" required="" id="{{ variable }}" min="{{ variable.get_lower }}" max="{{ variable.get_upper }}"></li>
+                            <input type="number" name="{{ variable }}" id="{{ variable }}_data" 
+                                min="{{ variable.get_lower }}" max="{{ variable.get_upper }}" 
+                                onkeyup=enforceMinMax(this)></li>
 
                         {% else %}
 
                             <li><label for="{{ variable }}_data">{{ variable.prompt }}</label>
-                            <select id="{{ variable }}" name="{{ variable }}">
+                            <select id="{{ variable }}_data" name="{{ variable }}">
                                 {% for cat_var_choice in variable.find_categorical_choices %}
-                                <option value={{cat_var_choice}}>{{ cat_var_choice }}</option>
+                                    <option value={{cat_var_choice}}>{{ cat_var_choice }}</option>
                                 {% endfor %}
                             </select></li>
                         
                         {% endif %}
+
                     {% endfor %} 
                 </ul>
                 <button type="submit" name="submit">Submit</button>
             </form>
         </div>
+
+    <script>
+    function enforceMinMax(el) {
+        console.log(el.min)
+        if (el.value != "") {
+          if (parseInt(el.value) < parseInt(el.min)) {
+            el.value = el.min;
+          }
+          if (parseInt(el.value) > parseInt(el.max)) {
+            el.value = el.max;
+          }
+        }
+      }
+    </script>
     </body>
 </html>    
 

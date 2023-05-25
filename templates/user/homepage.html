@@ -21,12 +21,13 @@
         }
         button {
             font-size: 100%;
-            padding-top: 2%;
+            margin-top: 2%;
         }
         table {
             border-collapse: collapse; 
             border: solid 3px #420000 ;
         }
+        
 
     </style>
 
@@ -44,11 +45,29 @@
                 {% endif %}
             </div>
             {% if data is not None %}
-                <button type="button" onclick="delete_data()" style="font-weight:bold;">Click to delete some or all data
+                <button type="button" onclick="delete_data()">Click to delete some or all data
                 <br>
                 <p>Note that deleting data cannot be undone.</p></button>
                 <div id="delete-days-container" style="display: none; margin: 2%;">
-                    <a href="delete_data/">Delete all data.</a>
+
+                    <form action="delete_data/" method="POST">
+                        {% csrf_token %}
+                        <span>
+                            <label for="start_delete_date" style="margin-left: 30%;">Delete from: </label>
+                            <input type="date" name="start_delete_date">
+                            <label for="end_delete_date">To:</label>
+                            <input type="date" name="end_delete_date" style="margin-right:30%;">
+                        </span>
+
+                        <button type="submit" name="submit" style="background-color: #FFFFF0;">Delete</button>
+                    </form>
+
+                    <br><br>
+
+                    <a href="delete_data/" style="font-weight:bold;">Delete all data.</a>
+
+
+                    <!-- 
                     <table>
 
                         {% for day in days %}
@@ -66,6 +85,7 @@
                         {% endfor %}
 
                     </table>
+                    -->
 
                 </div>
             {% endif %}
