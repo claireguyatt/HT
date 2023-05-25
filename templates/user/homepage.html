@@ -53,39 +53,18 @@
                     <form action="delete_data/" method="POST">
                         {% csrf_token %}
                         <span>
-                            <label for="start_delete_date" style="margin-left: 30%;">Delete from: </label>
+                            <label for="start_delete_date" >Delete from: </label>
                             <input type="date" name="start_delete_date">
-                            <label for="end_delete_date">To:</label>
-                            <input type="date" name="end_delete_date" style="margin-right:30%;">
-                        </span>
+                            <label for="end_delete_date"> to:</label>
+                            <input type="date" name="end_delete_date">
 
-                        <button type="submit" name="submit" style="background-color: #FFFFF0;">Delete</button>
+                            <button type="submit" name="submit" style="background-color: #FFFFF0;"> Delete</button>
+                        </span>
                     </form>
 
                     <br><br>
 
                     <a href="delete_data/" style="font-weight:bold;">Delete all data.</a>
-
-
-                    <!-- 
-                    <table>
-
-                        {% for day in days %}
-                        <tr>
-                            <td style="font-weight: bold;">{{ day }}</td>
-                            <td>
-                            <form action="delete_data/" method="POST">
-
-                                {% csrf_token %}
-
-                                <button type="submit" name="day" value="{{day}}" style="background-color: #FFFFF0;">Delete</button>
-                            </form>
-                            </td>
-                        </tr>
-                        {% endfor %}
-
-                    </table>
-                    -->
 
                 </div>
             {% endif %}

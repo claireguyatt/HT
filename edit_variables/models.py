@@ -1,6 +1,12 @@
 # django imports
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.forms import ValidationError
+
+# validation for continuous variable
+def validate_scale(lower_bound:int, upper_bound:int):
+    if lower_bound >= upper_bound:
+        raise ValidationError("Lower bound must be lower than uppoer bound for conitnuous variable scale.")
 
 # Variable model
 
